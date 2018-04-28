@@ -1,0 +1,259 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:h="http://java.sun.com/jsf/html"
+                xmlns:f="http://java.sun.com/jsf/core"
+                xmlns:ui="http://java.sun.com/jsf/facelets"
+                xmlns:p="http://primefaces.org/ui"
+                template="/WEB-INF/template.xhtml">
+
+
+
+    <ui:define name="head"></ui:define>
+    <ui:define name="viewname">
+        <li><p:link outcome="/dashboard">Gestion banque</p:link></li>
+    </ui:define>
+    <style>
+        .hlink{
+            color:red;
+        }
+    </style>
+    <ui:define name="content">
+        <div class="ui-g layout-dashboard">
+            <p:panel id="pane1" header="Commisssion Client">
+                <h:form id="dataForm">
+                    <p:dataTable id="dataUser" var="item" filterEvent="enter"  value="#{commissionClientBean.lazyModel}" paginator="true" rows="10"
+                                 paginatorTemplate="{RowsPerPageDropdown} {FirstPageLink} {PreviousPageLink} {CurrentPageReport} {NextPageLink} {LastPageLink}"  
+                                 rowsPerPageTemplate="10,20,50" lazy="true">
+                        <f:facet name="header">
+                            <p:commandButton ajax="true" value="Nouveau" styleClass="secondary-button"  actionListener="#{commissionClientBean.clearEntity}" oncomplete="PF('dlg2').show();" update=":myform"/>
+                        </f:facet>
+                        <p:column sortBy="#{item.code}" filterBy="#{item.code}">
+                            <f:facet name="header">
+                                <h:outputText value="Code"  />
+                            </f:facet>
+                            <h:outputText value="#{item.code}" />
+
+                        </p:column>
+                        <p:column sortBy="#{item.designationCommission}" filterBy="#{item.designationCommission}">
+                            <f:facet name="header">
+                                <h:outputText value="Designation" />
+                            </f:facet>
+
+                            <h:outputText value="#{item.designationCommission}" />
+
+
+                        </p:column>
+                        <p:column sortBy="#{item.agenceBancaire.designation}" filterBy="#{item.agenceBancaire.designation}">
+                            <f:facet name="header">
+                                <h:outputText value="Agence Bancaire" />
+                            </f:facet>
+
+                            <h:outputText value="#{item.agenceBancaire.designation}" />
+
+
+                        </p:column>
+                        <p:column sortBy="#{item.banqueCellocash.nom}" filterBy="#{item.banqueCellocash.nom}">
+                            <f:facet name="header">
+                                <h:outputText value="Banque" />
+                            </f:facet>
+
+                            <h:outputText value="#{item.banqueCellocash.nom}" />
+
+
+                        </p:column>
+
+
+                        <p:column >
+                            <p:commandButton ajax="true" actionListener="#{commissionClientBean.detail}" update=":myform" oncomplete="PF('dlg2').show();" icon="ui-icon fa fa-edit" style="color:white">
+
+                                <f:param name="idCommissionClient" value="#{item.id}" />
+                            </p:commandButton>
+                        </p:column>
+
+
+
+
+                    </p:dataTable>
+                </h:form>
+            </p:panel>
+
+
+            <p:dialog header="Ajouter/Modifier une Commission" id="idFormAdd" widgetVar="dlg2" modal="true" height="auto">
+                <h:form id="myform">
+
+                    <h:panelGrid id="creaMod" columns="2">
+                        <h:outputText value="Code  :*"  />
+                        <h:panelGroup>
+                            <p:inputText id="code" value="#{commissionClientBean.commissionsClient.code}"/>
+
+
+                        </h:panelGroup>
+
+
+                        <h:outputText value="Designation :" />
+                        <h:panelGroup>
+                            <p:inputText id="nomd" value="#{commissionClientBean.commissionsClient.designationCommission}"/>
+
+                        </h:panelGroup>
+
+                        <h:outputText value=""  />
+                        <p:fieldset legend="Banque" style="margin-bottom:20px">
+                            <h:panelGrid columns="2" cellpadding="5">
+                                <h:panelGroup>
+                                    <p:inputText id="noma" value="#{commissionClientBean.banqueCellocash.nom}"/>
+                                    <p:commandButton ajax="true" actionListener="#{commissionClientBean.detailListBanque}" update=":myformBanque" oncomplete="PF('dlgBanque').show();" icon="ui-icon fa fa-edit" style="color:white">
+
+
+                                    </p:commandButton>
+                                </h:panelGroup>
+
+                            </h:panelGrid>
+                        </p:fieldset>
+                        <h:outputText value=""  />
+                        <p:fieldset legend="Agence Bancaire" style="margin-bottom:20px">
+                            <h:panelGrid columns="2" cellpadding="5">
+                                <h:panelGroup>
+                                    <p:inputText id="noda" value="#{commissionClientBean.agenceBancaire.designation}"/>
+                                    <p:commandButton ajax="true" actionListener="#{commissionClientBean.detailListAgence}" update=":myformAgence" oncomplete="PF('dlgAgence').show();" icon="ui-icon fa fa-edit" style="color:white">
+
+
+                                    </p:commandButton>
+                                </h:panelGroup>
+
+                            </h:panelGrid>
+                        </p:fieldset>
+
+
+
+
+                    </h:panelGrid>
+
+
+                    <p:commandButton type="submit" action="#{commissionClientBean.createOrUpdate}" value="Enregistrer" update=":dataForm"  />
+                    <p:commandButton type="submit" style="float: right" value="Annuler" oncomplete="PF('dlg2').hide();" />
+
+                </h:form>
+            </p:dialog>   
+
+
+
+            <p:dialog header="Liste des banques" id="idFormListBanque" widgetVar="dlgBanque" modal="true" height="auto">
+                <h:form id="myformBanque">
+
+                    <p:dataTable id="dataUser" var="item" filterEvent="enter"  value="#{commissionClientBean.lazyModelBanqueCellocashs}" paginator="true" rows="10"
+                                 paginatorTemplate="{RowsPerPageDropdown} {FirstPageLink} {PreviousPageLink} {CurrentPageReport} {NextPageLink} {LastPageLink}"  
+                                 rowsPerPageTemplate="10,20,50" lazy="true" >
+
+                        <p:column sortBy="#{item.code}" filterBy="#{item.code}">
+                            <f:facet name="header">
+                                <h:outputText value="Code" />
+                            </f:facet>
+
+                            <h:outputText value="#{item.code}" />
+
+
+                        </p:column>
+                        <p:column sortBy="#{item.nom}" filterBy="#{item.nom}">
+                            <f:facet name="header">
+                                <h:outputText value="nom" />
+                            </f:facet>
+
+                            <h:outputText value="#{item.nom}" />
+
+
+                        </p:column>
+                        <p:column sortBy="#{item.prefixeCpteOrdinaire}" filterBy="#{item.prefixeCpteOrdinaire}">
+                            <f:facet name="header">
+                                <h:outputText value="Préfice compte ordinaire" />
+                            </f:facet>
+
+                            <h:outputText value="#{item.prefixeCpteOrdinaire}" />
+
+
+                        </p:column>
+                        <p:column sortBy="#{item.prefixeCpteneEparg}" filterBy="#{item.prefixeCpteneEparg}">
+                            <f:facet name="header">
+                                <h:outputText value="Préfice compte epargne" />
+                            </f:facet>
+
+                            <h:outputText value="#{item.prefixeCpteneEparg}" />
+
+
+                        </p:column>
+                        <p:column >
+                            <p:commandButton ajax="true" actionListener="#{commissionClientBean.selectlistbanque}" update=":myform"  icon="ui-icon fa fa-edit" value="select" style="color:white">
+
+                                <f:param name="idBanque" value="#{item.id}" />
+                            </p:commandButton>
+                        </p:column>
+
+
+                    </p:dataTable>
+                </h:form>
+            </p:dialog>   
+
+
+            <p:dialog header="Liste des Agences" id="idFormListAgence" widgetVar="dlgAgence" modal="true" height="auto">
+                <h:form id="myformAgence">
+
+                    <p:dataTable id="dataUser" var="item" filterEvent="enter"  value="#{commissionClientBean.lazyModelAgenceBancaire}" paginator="true" rows="10"
+                                 paginatorTemplate="{RowsPerPageDropdown} {FirstPageLink} {PreviousPageLink} {CurrentPageReport} {NextPageLink} {LastPageLink}"  
+                                 rowsPerPageTemplate="10,20,50" lazy="true">
+
+                        <p:column sortBy="#{item.code}" filterBy="#{item.code}">
+                            <f:facet name="header">
+                                <h:outputText value="Code" />
+                            </f:facet>
+
+                            <h:outputText value="#{item.code}" />
+
+
+                        </p:column>
+                        <p:column sortBy="#{item.designation}" filterBy="#{item.designation}">
+                            <f:facet name="header">
+                                <h:outputText value="Désignation" />
+                            </f:facet>
+
+                            <h:outputText value="#{item.designation}" />
+
+
+                        </p:column>
+                        <p:column sortBy="#{item.pays.designation}" filterBy="#{item.pays.designation}">
+                            <f:facet name="header">
+                                <h:outputText value="Pays" />
+                            </f:facet>
+
+                            <h:outputText value="#{item.pays.designation}" />
+
+
+                        </p:column>
+                        <p:column sortBy="#{item.typeAgenceBancaire.designation}" filterBy="#{item.typeAgenceBancaire.designation}">
+                            <f:facet name="header">
+                                <h:outputText value="Type Agence" />
+                            </f:facet>
+
+                            <h:outputText value="#{item.typeAgenceBancaire.designation}" />
+
+
+                        </p:column>
+
+                        <p:column >
+                            <p:commandButton ajax="true" actionListener="#{commissionClientBean.selectlistAgence}" update=":myform"  icon="ui-icon fa fa-edit" value="select" style="color:white">
+
+                                <f:param name="idAgence" value="#{item.id}" />
+                            </p:commandButton>
+                        </p:column>
+
+
+
+
+
+
+                    </p:dataTable>
+                </h:form>
+            </p:dialog>  
+
+
+        </div>
+    </ui:define>
+
+</ui:composition>

@@ -1,0 +1,148 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:h="http://java.sun.com/jsf/html"
+                xmlns:f="http://java.sun.com/jsf/core"
+                xmlns:ui="http://java.sun.com/jsf/facelets"
+                xmlns:p="http://primefaces.org/ui"
+                template="/WEB-INF/template.xhtml">
+
+
+
+    <ui:define name="head"></ui:define>
+    <ui:define name="viewname">
+        <li><p:link outcome="/dashboard">Gestion des Commissions</p:link></li>
+    </ui:define>
+    <style>
+        .hlink{
+            color:red;
+        }
+    </style>
+    <ui:define name="content">
+        <div class="ui-g layout-dashboard">
+            <p:panel id="pane1" header="Commisssion Taxe">
+                <h:form id="dataForm">
+                    <p:dataTable id="dataUser" var="items" filterEvent="enter"  value="#{commissionTaxeBean.lazyModel}" paginator="true" rows="10"
+                                 paginatorTemplate="{RowsPerPageDropdown} {FirstPageLink} {PreviousPageLink} {CurrentPageReport} {NextPageLink} {LastPageLink}"  
+                                 rowsPerPageTemplate="10,20,50" lazy="true">
+                        <f:facet name="header">
+                            <p:commandButton ajax="true" value="Nouveau" styleClass="secondary-button"  actionListener="#{commissionTaxeBean.clearEntity}" oncomplete="PF('dlg2').show();" update=":myform"/>
+                        </f:facet>
+                        <p:column sortBy="#{items.code}" filterBy="#{items.code}">
+                            <f:facet name="header">
+                                <h:outputText value="Code"  />
+                            </f:facet>
+                            <h:outputText value="#{items.code}" />
+
+                        </p:column>
+                        <p:column sortBy="#{items.designationCommission}" filterBy="#{items.designationCommission}">
+                            <f:facet name="header">
+                                <h:outputText value="Designation Commission" />
+                            </f:facet>
+
+                            <h:outputText value="#{items.designationCommission}" />
+
+
+                        </p:column>
+                        <p:column sortBy="#{items.designationTaxe}" filterBy="#{items.designationTaxe}">
+                            <f:facet name="header">
+                                <h:outputText value="Designation Taxe" />
+                            </f:facet>
+
+                            <h:outputText value="#{items.designationTaxe}" />
+
+
+                        </p:column>
+
+                        <p:column sortBy="#{items.banqueCellocash.nom}" filterBy="#{items.banqueCellocash.nom}">
+                            <f:facet name="header">
+                                <h:outputText value="Banque" />
+                            </f:facet>
+
+                            <h:outputText value="#{items.banqueCellocash.nom}" />
+
+
+                        </p:column>
+
+
+                        <p:column >
+                            <p:commandButton ajax="true" actionListener="#{commissionTaxeBean.detail}" update=":myform" oncomplete="PF('dlg2').show();" icon="ui-icon fa fa-edit" style="color:white">
+
+                                <f:param name="idCommissionTaxe" value="#{items.id}" />
+                            </p:commandButton>
+                        </p:column>
+
+
+
+
+                    </p:dataTable>
+                </h:form>
+            </p:panel>
+
+
+            <p:dialog header="Ajouter/Modifier une Commission" id="idFormAdd" widgetVar="dlg2" modal="true" height="auto">
+                <h:form id="myform">
+
+                    <h:panelGrid id="creaMod" columns="2">
+
+
+                        <h:outputText value="Pays:" />
+                        <p:selectOneMenu id="payss" value="#{commissionTaxeBean.pays}" style="width:200px" converter="paysConverter">
+                            <p:ajax listener="#{commissionTaxeBean.loadlistedesBanques}" update="banques" />
+                            <f:selectItem itemLabel="----" itemValue="" /> 
+                            <f:selectItems value="#{commissionTaxeBean.listePays}" var="pays" itemValue="#{pays}" itemLabel="#{pays.designation}" />
+
+                        </p:selectOneMenu>
+                        <h:outputText value="Banque:" />
+                        <p:selectOneMenu id="banques" value="#{commissionTaxeBean.banqueCellocash}" style="width:200px" converter="banqueConverter">
+
+                            <f:selectItem itemLabel="----" itemValue="" /> 
+                            <f:selectItems value="#{commissionTaxeBean.listeBanqueCellocashs}" var="banque" itemValue="#{banque}" itemLabel="#{banque.nom}" />
+                        </p:selectOneMenu>
+
+
+
+
+
+
+
+                        <h:outputText value="Code  :*"  />
+                        <h:panelGroup>
+                            <p:inputText id="code" value="#{commissionTaxeBean.commissionTaxe.code}"/>
+
+
+                        </h:panelGroup>
+
+
+                        <h:outputText value="Designation :" />
+                        <h:panelGroup>
+                            <p:inputText id="nomd" value="#{commissionTaxeBean.commissionTaxe.designationCommission}"/>
+
+                        </h:panelGroup>
+                        <h:outputText value="Designation Taxe :" />
+                        <h:panelGroup>
+                            <p:inputText id="nomdt" value="#{commissionTaxeBean.commissionTaxe.designationTaxe}"/>
+
+                        </h:panelGroup>
+
+
+
+
+
+
+                    </h:panelGrid>
+
+
+                    <p:commandButton type="submit" action="#{commissionTaxeBean.createOrUpdate}" value="Enregistrer" update=":dataForm"  />
+                    <p:commandButton type="submit" style="float: right" value="Annuler" oncomplete="PF('dlg2').hide();" />
+
+                </h:form>
+            </p:dialog>   
+
+
+
+
+
+
+        </div>
+    </ui:define>
+
+</ui:composition>

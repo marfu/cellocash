@@ -1,0 +1,131 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:h="http://java.sun.com/jsf/html"
+                xmlns:f="http://java.sun.com/jsf/core"
+                xmlns:ui="http://java.sun.com/jsf/facelets"
+                xmlns:p="http://primefaces.org/ui"
+                template="/WEB-INF/template.xhtml">
+
+
+
+    <ui:define name="head"></ui:define>
+    <ui:define name="viewname">
+
+        <li><p:link outcome="/banque">Gestion banque</p:link></li>
+        <li>/<p:link outcome="/agenceBancaire">Agence bancaire</p:link></li>
+    </ui:define>
+
+    <ui:define name="content">
+        <div class="ui-g layout-dashboard">
+            <p:panel id="pane1" header="Agence bancaire">
+                <h:form id="dataForm">
+                    <p:dataTable id="dataUser" var="item"   value="#{agenceBancaireBean.lazyModel}" paginator="true" rows="10"
+                                 paginatorTemplate="{RowsPerPageDropdown} {FirstPageLink} {PreviousPageLink} {CurrentPageReport} {NextPageLink} {LastPageLink}"  
+                                 rowsPerPageTemplate="10,20,50" lazy="true">
+                        <f:facet name="header">
+                            <p:commandButton ajax="true" value="Nouveau" styleClass="secondary-button" actionListener="#{agenceBancaireBean.newItem}"  oncomplete="PF('dlg2').show();" update=":myform"/>
+                        </f:facet>
+                        <p:column sortBy="#{item.code}" filterBy="#{item.code}">
+                            <f:facet name="header">
+                                <h:outputText value="Code" />
+                            </f:facet>
+
+
+                            <h:outputText value="#{item.code}"  style="background-color: #193746;color: white;padding: 5px;font-weight: bold"/>
+
+
+                        </p:column>
+                        <p:column sortBy="#{item.designation}" filterBy="#{item.designation}">
+                            <f:facet name="header">
+                                <h:outputText value="Désignation" />
+                            </f:facet>
+
+                            <h:outputText value="#{item.designation}" />
+
+
+                        </p:column>
+
+                        <p:column sortBy="#{item.banqueCellocash.nom}" filterBy="#{item.banqueCellocash.nom}">
+                            <f:facet name="header">
+                                <h:outputText value="Banque" />
+                            </f:facet>
+
+                            <h:outputText value="#{item.banqueCellocash.nom}" />
+
+
+                        </p:column>
+                        <p:column sortBy="#{item.typeAgenceBancaire.designation}" filterBy="#{item.typeAgenceBancaire.designation}">
+                            <f:facet name="header">
+                                <h:outputText value="Type Agence" />
+                            </f:facet>
+
+                            <h:outputText value="#{item.typeAgenceBancaire.designation}" />
+
+
+                        </p:column>
+
+
+
+                        <p:column >
+                            <p:commandButton ajax="true" actionListener="#{agenceBancaireBean.detail}" update=":myform" oncomplete="PF('dlg2').show();" icon="ui-icon fa fa-edit" style="color:white">
+
+                                <f:param name="idAgenceBancaire" value="#{item.id}" />
+                            </p:commandButton>
+                        </p:column>
+
+
+
+
+                    </p:dataTable>
+                </h:form>
+            </p:panel>
+
+            <p:dialog header="Ajouter/Modifier une agence bancaire" id="idFormAddBanque" widgetVar="dlg2" modal="true" height="auto">
+                <h:form id="myform">
+                    <p:messages id="msgs" />
+                    <h:panelGrid id="creaMod" columns="1">
+                        <h:outputText value="Code  :" for="code" />
+                        <h:panelGroup>
+                            <p:inputText id="code" value="#{agenceBancaireBean.selectedAgenceBancaire.code}"/>
+
+
+                        </h:panelGroup>
+
+
+                        <h:outputText value="Designation :" for="nom" />
+                        <h:panelGroup>
+                            <p:inputText id="nom" value="#{agenceBancaireBean.selectedAgenceBancaire.designation}"/>
+
+                        </h:panelGroup>
+
+
+
+                        <h:outputLabel for="banque" value="Banque :" />
+
+
+
+                        <p:selectOneMenu id="banque" value="#{agenceBancaireBean.selectedAgenceBancaire.banqueCellocash}" converter="banqueConverter">
+                            <f:selectItem itemLabel="Selectionner une banque" />
+                            <f:selectItems value="#{banqueCelloCashBean.allBanqueCelloCash}"  var="banque" itemValue="#{banque}" itemLabel="#{banque.nom}" />
+                        </p:selectOneMenu>
+
+
+                        <h:outputLabel for="type" value="Type agence bancaire :" />
+                        <p:selectOneMenu id="type" value="#{agenceBancaireBean.selectedAgenceBancaire.typeAgenceBancaire}" converter="typeAgenceBancaireConverter">
+                            <f:selectItem itemLabel="Selectionner un type"  />
+                            <f:selectItems value="#{agenceBancaireBean.listeTypeAgenceBancaire}" var="type" itemLabel="#{type.designation}" itemValue="#{type}"/>
+                        </p:selectOneMenu>
+
+
+
+                    </h:panelGrid>
+
+
+                    <p:commandButton type="submit" action="#{agenceBancaireBean.save}" value="Enregistrer" update=":dataForm msgs"  />
+                    <p:commandButton type="submit" style="float: right" value="Annuler" oncomplete="PF('dlg2').hide();" />
+
+                </h:form>
+            </p:dialog>   
+        </div>
+    </ui:define>
+
+</ui:composition>

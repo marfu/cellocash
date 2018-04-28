@@ -1,0 +1,212 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:h="http://java.sun.com/jsf/html"
+                xmlns:f="http://java.sun.com/jsf/core"
+                xmlns:ui="http://java.sun.com/jsf/facelets"
+                xmlns:p="http://primefaces.org/ui"
+                template="/WEB-INF/template.xhtml">
+
+
+
+    <ui:define name="head"></ui:define>
+    <ui:define name="viewname">
+        <li><p:link outcome="/dashboard">Gestion Commissions</p:link></li>
+    </ui:define>
+    <style>
+        .hlink{
+            color:red;
+        }
+    </style>
+    <ui:define name="content">
+
+        <div class="ui-g layout-dashboard">
+            <p:panel id="pane1" header="Commisssion Taxe">
+
+                <h:form id="dataForm">
+                    <p:dataTable id="dataUser" var="item" filterEvent="enter"  value="#{ligneCommissionTaxeBean.lazyModel}" paginator="true" rows="10"
+                                 paginatorTemplate="{RowsPerPageDropdown} {FirstPageLink} {PreviousPageLink} {CurrentPageReport} {NextPageLink} {LastPageLink}"  
+                                 rowsPerPageTemplate="10,20,50" lazy="true">
+                        <f:facet name="header">
+                            <p:commandButton ajax="true" value="Nouveau" styleClass="secondary-button"  actionListener="#{ligneCommissionTaxeBean.clearEntity}" oncomplete="PF('dlg2').show();" update=":myform"/>
+                        </f:facet>
+                        <p:column sortBy="#{item.commissionTaxe.banqueCellocash.pays.designation}" filterBy="#{item.commissionTaxe.banqueCellocash.pays.designation}">
+                            <f:facet name="header">
+                                <h:outputText value="Pays"  />
+                            </f:facet>
+                            <h:outputText value="#{item.commissionTaxe.banqueCellocash.pays.designation}" />
+
+                        </p:column>
+                        <p:column sortBy="#{item.commissionTaxe.banqueCellocash.nom}" filterBy="#{item.commissionTaxe.banqueCellocash.nom}">
+                            <f:facet name="header">
+                                <h:outputText value="Banque" />
+                            </f:facet>
+
+                            <h:outputText value="#item.commissionClient.banqueCellocash.nom}" />
+
+
+                        </p:column>
+
+                        <p:column sortBy="#{item.numeroLigne}" filterBy="#{item.numeroLigne}">
+                            <f:facet name="header">
+                                <h:outputText value="Numero Ligne" />
+                            </f:facet>
+
+                            <h:outputText value="#{item.numeroLigne}" />
+
+
+                        </p:column>
+
+                        <p:column sortBy="#{item.operationCellocah.libelle}" filterBy="#{item.operationCellocah.libelle}">
+                            <f:facet name="header">
+                                <h:outputText value="Nom Operation" />
+                            </f:facet>
+
+                            <h:outputText value="#{item.operationCellocah.libelle}" />
+
+                        </p:column>
+                        <p:column sortBy="#{item.impotTaxe}" filterBy="#{item.impotTaxe}">
+                            <f:facet name="header">
+                                <h:outputText value="Type de taxe" />
+                            </f:facet>
+
+                            <h:outputText value="#{item.impotTaxe}" />
+
+                        </p:column>
+
+                      
+
+                        <p:column sortBy="#{item.mntBorneSup}" filterBy="#{item.mntBorneSup}">
+                            <f:facet name="header">
+                                <h:outputText value="Montant" />
+                            </f:facet>
+
+                            <h:outputText value="#{item.mntBorneSup}" />
+
+                        </p:column>
+
+                        <p:column sortBy="#{item.taxeEnValeur}" filterBy="#{item.taxeEnValeur}">
+                            <f:facet name="header">
+                                <h:outputText value="Taxe" />
+                            </f:facet>
+
+                            <h:outputText value="#{item.taxeEnValeur}" />
+
+                        </p:column>
+                        <p:column sortBy="#{item.taxeEnPourcentage}" filterBy="#{item.taxeEnPourcentage}">
+                            <f:facet name="header">
+                                <h:outputText value="Taxe %" />
+                            </f:facet>
+
+                            <h:outputText value="#{item.taxeEnPourcentage}" />
+
+                        </p:column>
+
+                        <p:column >
+                            <p:commandButton ajax="true" actionListener="#{ligneCommissionTaxeBean.detail}" update=":myform" oncomplete="PF('dlg2').show();" icon="ui-icon fa fa-edit" style="color:white">
+
+                                <f:param name="idligneCommissionTaxe" value="#{item.id}" />
+                            </p:commandButton>
+                        </p:column>
+
+
+
+
+                    </p:dataTable>
+                </h:form>
+            </p:panel>
+
+
+            <p:dialog header="Ajouter/Modifier une Commission" id="idFormAdd" widgetVar="dlg2" modal="true" height="auto">
+                <h:form id="myform">
+
+                    <h:panelGrid id="creaMod" columns="1">
+
+
+
+                        <p:fieldset legend="Commissions" style="margin-bottom:20px">
+                            <h:panelGrid columns="6" cellpadding="5">
+                                <h:outputLabel value="Pays:"  />
+                                <p:selectOneMenu id="payss" value="#{ligneCommissionTaxeBean.pays}" style="width:200px" converter="paysConverter">
+                                    <p:ajax listener="#{ligneCommissionTaxeBean.loadlistedesBanques}" update="banques" />
+                                    <f:selectItem itemLabel="----" itemValue="" /> 
+                                    <f:selectItems value="#{ligneCommissionTaxeBean.listePays}" var="pays" itemValue="#{pays}" itemLabel="#{pays.designation}" />
+
+                                </p:selectOneMenu>
+                                <h:outputLabel value="Banque:"  />
+                                <p:selectOneMenu id="banques" value="#{ligneCommissionTaxeBean.banqueCellocash}" style="width:200px" converter="banqueConverter">
+                                    <p:ajax listener="#{ligneCommissionTaxeBean.loadlistedesCommissions}" update="commissions" />
+                                    <f:selectItem itemLabel="----" itemValue="" /> 
+                                    <f:selectItems value="#{ligneCommissionTaxeBean.listeBanqueCellocashs}" var="banque" itemValue="#{banque}" itemLabel="#{banque.nom}" />
+                                </p:selectOneMenu>
+
+
+                                <h:outputLabel value="Operation :"  />
+                                <p:selectOneMenu id="operations" value="#{ligneCommissionTaxeBean.operationCellocash}" style="width:200px" converter="operationCellocashConverter">
+
+                                    <f:selectItem itemLabel="----" itemValue="" /> 
+                                    <f:selectItems value="#{ligneCommissionTaxeBean.listOperationCellocash}" var="operation" itemValue="#{operation}" itemLabel="#{operation.libelle}" />
+                                </p:selectOneMenu>
+
+                                <h:outputLabel value="commission :"  />
+                                <p:selectOneMenu id="commissions" value="#{ligneCommissionTaxeBean.commissionTaxe}" style="width:200px" converter="commissionTaxeConverter">
+
+                                    <f:selectItem itemLabel="----" itemValue="" /> 
+                                    <f:selectItems value="#{ligneCommissionTaxeBean.listCommissionTaxe}" var="commission" itemValue="#{commission}" itemLabel="#{commission.designationCommission}" />
+                                </p:selectOneMenu>
+
+                            </h:panelGrid>
+                        </p:fieldset>
+                        <p:fieldset legend="Commissions" style="margin-bottom:20px">
+                            <h:panelGrid columns="6" cellpadding="5">
+                                <h:outputLabel value="Ligne Commission"  />
+                                <h:panelGroup>
+                                    <p:inputText id="lignecom" value="#{ligneCommissionTaxeBean.ligneCommissionTaxe.numeroLigne}"/>
+                                </h:panelGroup>
+                                <h:outputLabel value="Montant Sup"/>
+                                <h:panelGroup>
+                                    <p:inputText id="mntjus" value="#{ligneCommissionTaxeBean.ligneCommissionTaxe.mntBorneSup}"/>
+                                </h:panelGroup>
+                                <h:outputLabel value="Date effet"  />
+                                <p:calendar required="true" id="dateeffet"   value="#{ligneCommissionTaxeBean.ligneCommissionTaxe.dateEffet}" label="Date Effet">
+                                </p:calendar>
+                                <h:outputLabel value="Type taxe :"  />
+                                <p:selectOneMenu id="typeTaxe" value="#{ligneCommissionTaxeBean.typeImportTaxe}" style="width:200px" converter="typeImpotTaxeConverter">
+
+                                    <f:selectItem itemLabel="----" itemValue="" /> 
+                                    <f:selectItems value="#{ligneCommissionTaxeBean.listeTypeImpotTaxe}" var="typeimpot" itemValue="#{typeimpot}" itemLabel="#{typeimpot.designation}" />
+                                </p:selectOneMenu>
+
+                                <h:outputLabel value="Taxe en valeur"  />
+                                <h:panelGroup>
+                                    <p:inputText id="comval" value="#{ligneCommissionTaxeBean.ligneCommissionTaxe.taxeEnValeur}"/>
+                                </h:panelGroup>
+                                <h:outputLabel value="Taxe en %"  />
+                                <h:panelGroup>
+                                    <p:inputText id="compour" value="#{ligneCommissionTaxeBean.ligneCommissionTaxe.taxeEnPourcentage}"/>
+                                </h:panelGroup>
+                            </h:panelGrid>
+                        </p:fieldset>
+
+
+
+
+                    </h:panelGrid>
+
+
+                    <p:commandButton  actionListener="#{ligneCommissionTaxeBean.createOrUpdate}" value="Enregistrer"  />
+                    <p:commandButton  action="#{ligneCommissionTaxeBean.test}" value="aer"  />
+
+                </h:form>
+            </p:dialog>  
+
+
+
+
+
+
+
+
+
+        </div>
+    </ui:define>
+
+</ui:composition>

@@ -1,0 +1,133 @@
+<?xml version="1.0" encoding="utf-8"?>
+<faces-config version="2.0" xmlns="http://java.sun.com/xml/ns/javaee"
+              xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+              xsi:schemaLocation="http://java.sun.com/xml/ns/javaee http://java.sun.com/xml/ns/javaee/web-facesconfig_2_0.xsd">
+    
+    <name>primefaces_harmony</name>
+    
+    <component>
+        <component-type>org.primefaces.component.HarmonyMenu</component-type>
+        <component-class>org.primefaces.harmony.component.HarmonyMenu</component-class>
+    </component>
+    
+    <render-kit>
+        <renderer>
+            <component-family>org.primefaces.component</component-family>
+            <renderer-type>org.primefaces.component.HarmonyMenuRenderer</renderer-type>
+            <renderer-class>org.primefaces.harmony.component.HarmonyMenuRenderer</renderer-class>
+        </renderer>
+    </render-kit>
+    <navigation-rule>
+        <from-view-id>*</from-view-id>
+        <navigation-case>
+            <from-outcome>success-login</from-outcome>
+            <to-view-id>/dashboard.xhtml</to-view-id>
+            <redirect />
+        </navigation-case>
+        <navigation-case>
+            <from-outcome>disconnect-login</from-outcome>
+            <to-view-id>/login.xhtml</to-view-id>
+             <redirect />
+        </navigation-case>
+        <navigation-case>
+            <from-outcome>dashboard</from-outcome>
+            <to-view-id>/dashboard.xhtml</to-view-id>
+             <redirect />
+        </navigation-case>
+        <navigation-case>
+            <from-outcome>changePassword</from-outcome>
+            <to-view-id>/security/user/changePassword.xhtml</to-view-id>
+             <redirect />
+        </navigation-case>
+        
+       
+        <navigation-case>
+            <from-outcome>listUsers</from-outcome>
+            <to-view-id>/security/user/listUsers.xhtml</to-view-id>
+             <redirect />
+        </navigation-case>
+        <navigation-case>
+            <from-outcome>listRoles</from-outcome>
+            <to-view-id>/security/user/listRoles.xhtml</to-view-id>
+             <redirect />
+        </navigation-case>
+        <navigation-case>
+            <from-outcome>listPermissions</from-outcome>
+            <to-view-id>/security/user/listPermissions.xhtml</to-view-id>
+             <redirect />
+        </navigation-case>
+        <navigation-case>
+            <from-outcome>paramMouvementStatDem</from-outcome>
+            <to-view-id>/security/param/paramMouvementStatDem.xhtml</to-view-id>
+             <redirect />
+        </navigation-case>
+        <navigation-case>
+            <from-outcome>listUsers</from-outcome>
+            <to-view-id>/security/user/listUsers.xhtml</to-view-id>
+             <redirect />
+        </navigation-case>
+        <navigation-case>
+            <from-outcome>listRoles</from-outcome>
+            <to-view-id>/security/user/listRoles.xhtml</to-view-id>
+             <redirect />
+        </navigation-case>
+        <navigation-case>
+            <from-outcome>listPermissions</from-outcome>
+            <to-view-id>/security/user/listPermissions.xhtml</to-view-id>
+             <redirect />
+        </navigation-case>
+        <navigation-case>
+            <from-outcome>paramMouvementStatDem</from-outcome>
+            <to-view-id>/security/param/paramMouvementStatDem.xhtml</to-view-id>
+             <redirect />
+        </navigation-case>
+        
+        
+        <!-- Debut Banque-->
+        <navigation-case>
+            <from-outcome>/banque</from-outcome>
+            <to-view-id>/pages/gestionBanque/banque.xhtml</to-view-id>
+             <redirect />
+        </navigation-case>
+        <navigation-case>
+            <from-outcome>/agenceBancaire</from-outcome>
+            <to-view-id>/pages/gestionBanque/agenceBancaire.xhtml</to-view-id>
+             <redirect />
+        </navigation-case>
+        <navigation-case>
+            <from-outcome>/commissionBusiness</from-outcome>
+            <to-view-id>/pages/commissions/commissionBusiness.xhtml</to-view-id>
+             <redirect />
+        </navigation-case>
+         <!-- Fin Banque-->
+         <navigation-case>
+            <from-outcome>/grossiste</from-outcome>
+            <to-view-id>/pages/gestionGrossiste/grossiste.xhtml</to-view-id>
+             <redirect />
+        </navigation-case>
+        
+         <navigation-case>
+            <from-outcome>/taxes</from-outcome>
+            <to-view-id>/pages/gestionTaxes/taxes.xhtml</to-view-id>
+             <redirect />
+        </navigation-case>
+        
+        
+        
+        <navigation-case>
+            <from-outcome>/commissionClient</from-outcome>
+            <to-view-id>/pages/commissions/commissionClient.xhtml</to-view-id>
+             <redirect />
+        </navigation-case>
+        <navigation-case>
+            <from-outcome>/commissionTaxe</from-outcome>
+            <to-view-id>/pages/commissions/commissionTaxe.xhtml</to-view-id>
+             <redirect />
+        </navigation-case>
+        <navigation-case>
+            <from-outcome>/lignecommissionClient</from-outcome>
+            <to-view-id>/pages/commissions/lignecommissionclient.xhtml</to-view-id>
+             <redirect />
+        </navigation-case>
+    </navigation-rule>
+</faces-config>

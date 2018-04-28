@@ -1,0 +1,168 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:h="http://java.sun.com/jsf/html"
+                xmlns:f="http://java.sun.com/jsf/core"
+                xmlns:ui="http://java.sun.com/jsf/facelets"
+                xmlns:p="http://primefaces.org/ui"
+                template="/WEB-INF/template.xhtml">
+
+
+
+    <ui:define name="head"></ui:define>
+    <ui:define name="viewname">
+        <li><p:link outcome="/dashboard">Gestion banque</p:link></li>
+    </ui:define>
+    <style>
+        .hlink{
+            color:red;
+        }
+    </style>
+    <ui:define name="content">
+        <div class="ui-g layout-dashboard">
+            <p:panel id="pane1" header="Gestion des commission business">
+                <h:form id="dataForm">
+                    <p:dataTable id="dataUser" var="item" filterEvent="enter"  value="#{commissionLigneBusinessBean.lazyModel}" paginator="true" rows="10"
+                                 paginatorTemplate="{RowsPerPageDropdown} {FirstPageLink} {PreviousPageLink} {CurrentPageReport} {NextPageLink} {LastPageLink}"  
+                                 rowsPerPageTemplate="10,20,50" lazy="true">
+                        <f:facet name="header">
+                            <p:commandButton ajax="true" value="Nouveau" styleClass="secondary-button" actionListener="#{banqueCelloCashBean.newItem}"  oncomplete="PF('dlg2').show();" update=":myform"/>
+                        </f:facet>
+                       
+                      
+
+
+
+
+
+                        <p:column >
+                            <p:commandButton ajax="true" actionListener="#{banqueCelloCashBean.detail}" update=":myform" oncomplete="PF('dlg2').show();" icon="ui-icon fa fa-edit" style="color:white">
+
+                                <f:param name="idBanque" value="#{item.id}" />
+                            </p:commandButton>
+                        </p:column>
+
+
+
+
+
+                    </p:dataTable>
+                </h:form>
+            </p:panel>
+
+            <p:dialog header="Ajouter/Modifier une Commission" id="idFormAddBanque" widgetVar="dlg2" modal="true" height="auto">
+                <h:form id="myform">
+                    <p:messages id="msgs" />
+
+                    <p:fieldset legend="Identification banque, agence, operation" style="margin-bottom:20px">
+                        <h:panelGrid id="creaMod" columns="2">
+                            <h:panelGrid  columns="4">
+
+                                
+                            
+               
+
+
+                                <h:outputLabel for="agence_bancaire" value="Commission business :" />
+
+                                <h:selectOneMenu id="Commission_business" value="#{commissionLigneBusinessBean.selectedComissionBusiness.commissionsBusiness}" converter="commissionBusinessConveter">
+                                    <f:selectItem itemLabel="Commission business" />
+                                    <f:selectItems value="#{commissionBusinessBean.allBCommissionBusiness}"  var="comBusiness" itemValue="#{comBusiness}" itemLabel="#{comBusiness.designationCommission}" />
+                                </h:selectOneMenu>
+
+                                <h:outputLabel for="operation" value="Operations business :" />
+
+                               
+
+                            </h:panelGrid>
+
+
+                        </h:panelGrid>
+
+
+                    </p:fieldset>
+                    <p:fieldset legend="Commissions " style="margin-bottom:20px">
+                        <h:panelGrid  columns="1">
+
+                            <h:panelGrid  columns="4">
+                                <h:outputText value="Ligne commission  :*"  />
+                                <h:panelGroup>
+                                    <p:inputText  value="#{commissionLigneBusinessBean.selectedComissionBusiness.numeroLigne}"  />
+                                </h:panelGroup>
+
+
+                                <h:outputText value="Date effet :"/>
+                                <h:panelGroup>
+                                    <p:calendar id="popup" value="#{commissionLigneBusinessBean.selectedComissionBusiness.dateEffet}" />
+
+                                </h:panelGroup>
+
+                            </h:panelGrid>
+                            <h:panelGrid  columns="6">
+                                <h:outputText value="Montant jusqu'a  :*"  />
+                                <h:panelGroup>
+                                    <p:inputText  value="#{commissionLigneBusinessBean.selectedComissionBusiness.mntBorneSup}"  />
+                                </h:panelGroup>
+
+
+                                <h:outputText value="Commission valeur :"/>
+                                <h:panelGroup>
+                                    <p:inputText  value="#{commissionLigneBusinessBean.selectedComissionBusiness.commissionEnValeur}"  />
+
+                                </h:panelGroup>
+                                <h:outputText value="Commission en  %:"/>
+                                <h:panelGroup>
+                                    <p:inputText  value="#{commissionLigneBusinessBean.selectedComissionBusiness.commissionEnPourcentage}"  />
+
+                                </h:panelGroup>
+
+
+
+
+
+
+                            </h:panelGrid>
+                            <h:panelGrid  columns="4">
+                                <h:outputText value="Commission Master Valeur :*"  />
+                                <h:panelGroup>
+                                    <p:inputText  value="#{commissionLigneBusinessBean.selectedComissionBusiness.partCommissionDealerValeur}" />
+                                </h:panelGroup>
+
+
+                                <h:outputText value="Commission  Master en % :"/>
+                                <h:panelGroup>
+                                    <p:inputText  value="#{commissionLigneBusinessBean.selectedComissionBusiness.partCommissionDealerPourcentage}"  />
+
+                                </h:panelGroup>
+                                <h:outputText value="Commission distributeur valeur  :"/>
+                                <h:panelGroup>
+                                    <p:inputText  value="#{commissionLigneBusinessBean.selectedComissionBusiness.partCommissionSubDealerValeur}"  />
+
+                                </h:panelGroup>
+                                <h:outputText value="Commission distributeur en % :"/>
+                                <h:panelGroup>
+                                    <p:inputText  value="#{commissionLigneBusinessBean.selectedComissionBusiness.partCommissionSubDealerPourcentage}" />
+
+                                </h:panelGroup>
+
+
+
+
+
+
+
+                            </h:panelGrid>
+
+
+                        </h:panelGrid>
+                    </p:fieldset>
+
+
+
+                    <p:commandButton type="submit" action="#{commissionLigneBusinessBean.save}" value="Enregistrer" update=":dataForm msgs"  />
+                    <p:commandButton type="submit" style="float: right" value="Annuler" oncomplete="PF('dlg2').hide();" />
+
+                </h:form>
+            </p:dialog>   
+        </div>
+    </ui:define>
+
+</ui:composition>

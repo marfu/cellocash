@@ -1,0 +1,119 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:h="http://java.sun.com/jsf/html"
+                xmlns:f="http://java.sun.com/jsf/core"
+                xmlns:ui="http://java.sun.com/jsf/facelets"
+                xmlns:p="http://primefaces.org/ui"
+                template="/WEB-INF/template.xhtml">
+
+
+
+    <ui:define name="head"></ui:define>
+    <ui:define name="viewname">
+        <li><p:link outcome="/dashboard">Gestion banque</p:link></li>
+    </ui:define>
+    <style>
+        .hlink{
+            color:red;
+        }
+    </style>
+    <ui:define name="content">
+        <div class="ui-g layout-dashboard">
+            <p:panel id="pane1" header="Gestion des commission business">
+                <h:form id="dataForm">
+                    <p:dataTable id="dataUser" var="item" filterEvent="enter"  value="#{commissionLigneBusinessBean.lazyModel}" paginator="true" rows="10"
+                                 paginatorTemplate="{RowsPerPageDropdown} {FirstPageLink} {PreviousPageLink} {CurrentPageReport} {NextPageLink} {LastPageLink}"  
+                                 rowsPerPageTemplate="10,20,50" lazy="true">
+                        <f:facet name="header">
+                            <p:commandButton ajax="true" value="Nouveau" styleClass="secondary-button" actionListener="#{banqueCelloCashBean.newItem}"  oncomplete="PF('dlg2').show();" update=":myform"/>
+                        </f:facet>
+                       
+                        <p:column sortBy="#{item.numeroLigne}" filterBy="#{item.numeroLigne}">
+                            <f:facet name="header">
+                                <h:outputText value="Numéro ligne" />
+                            </f:facet>
+
+                            <h:outputText value="#{item.numeroLigne}" />
+
+
+                        </p:column>
+                        <p:column sortBy="#{item.operationCellocah.libelle}" filterBy="#{item.operationCellocah.libelle}">
+                            <f:facet name="header">
+                                <h:outputText value="Nom opération" />
+                            </f:facet>
+
+                            <h:outputText value="#{item.operationCellocah.libelle}" />
+
+
+                        </p:column>
+
+
+                        <p:column sortBy="#{item.commissionEnPourcentage}" filterBy="#{item.commissionEnPourcentage}">
+                            <f:facet name="header">
+                                <h:outputText value="Pourcentage commission" />
+                            </f:facet>
+
+                            <h:outputText value="#{item.commissionEnPourcentage}" />
+
+
+                        </p:column>
+
+
+
+
+
+                        <p:column >
+                            <p:commandButton ajax="true" actionListener="#{banqueCelloCashBean.detail}" update=":myform" oncomplete="PF('dlg2').show();" icon="ui-icon fa fa-edit" style="color:white">
+
+                                <f:param name="idBanque" value="#{item.id}" />
+                            </p:commandButton>
+                        </p:column>
+
+
+
+
+
+                    </p:dataTable>
+                </h:form>
+            </p:panel>
+
+            <p:dialog header="Ajouter/Modifier une Commission" id="idFormAddBanque" widgetVar="dlg2" modal="true" height="auto">
+                <h:form id="myform">
+                    <p:messages id="msgs" />
+
+                    <p:fieldset legend="Identification banque, agence, operation" style="margin-bottom:20px">
+                        <h:panelGrid id="creaMod" columns="2">
+                            <h:panelGrid  columns="4">
+
+                                
+                            
+               
+
+
+                                <h:outputLabel for="agence_bancaire" value="Commission business :" />
+
+                                <h:selectOneMenu id="Commission_business" value="#{commissionLigneBusinessBean.commissionBusiness}" converter="commissionBusinessConveter">
+                                    <f:selectItem itemLabel="Commission business" />
+                                    <f:selectItems value="#{commissionBusinessBean.allBCommissionBusiness}"  var="com" itemValue="#{com}" itemLabel="#{com.designationCommission}" />
+                                </h:selectOneMenu>
+
+
+                            </h:panelGrid>
+
+
+                        </h:panelGrid>
+
+
+                    </p:fieldset>
+                   
+
+
+
+                    <p:commandButton type="submit" action="#{commissionLigneBusinessBean.save}" value="Enregistrer" update=":dataForm msgs"  />
+                    <p:commandButton type="submit" style="float: right" value="Annuler" oncomplete="PF('dlg2').hide();" />
+
+                </h:form>
+            </p:dialog>   
+        </div>
+    </ui:define>
+
+</ui:composition>

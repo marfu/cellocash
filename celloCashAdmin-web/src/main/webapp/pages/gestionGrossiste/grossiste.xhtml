@@ -1,0 +1,127 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:h="http://java.sun.com/jsf/html"
+                xmlns:f="http://java.sun.com/jsf/core"
+                xmlns:ui="http://java.sun.com/jsf/facelets"
+                xmlns:p="http://primefaces.org/ui"
+                template="/WEB-INF/template.xhtml">
+
+
+
+    <ui:define name="head"></ui:define>
+    <ui:define name="viewname">
+        <li><p:link outcome="/dashboard">Gestion grossistes</p:link></li>
+    </ui:define>
+    <style>
+        .hlink{
+            color:red;
+        }
+    </style>
+    <ui:define name="content">
+        <div class="ui-g layout-dashboard">
+            <p:panel id="pane1" header="Banques">
+                <h:form id="dataForm">
+                    <p:dataTable id="dataUser" var="item"   value="#{grossistesBean.lazyModel}" paginator="true" rows="10"
+                                 paginatorTemplate="{RowsPerPageDropdown} {FirstPageLink} {PreviousPageLink} {CurrentPageReport} {NextPageLink} {LastPageLink}"  
+                                 rowsPerPageTemplate="10,20,50" lazy="true" selection="#{banqueCelloCashBean.selectedListBanqueCellocash}" >
+                        <f:facet name="header">
+                            <p:commandButton ajax="true" value="Nouveau" styleClass="secondary-button" actionListener="#{banqueCelloCashBean.newItem}"  oncomplete="PF('dlg2').show();" update=":myform"/>
+                        </f:facet>
+                        <p:column sortBy="#{item.nomDistributeur}" filterBy="#{item.nomDistributeur}">
+                            <f:facet name="header">
+                                <h:outputText value="Nom distributeur" />
+                            </f:facet>
+
+                            <f:param name="id" value="#{item.id}" />
+                            <h:outputText value="#{item.nomDistributeur}" />
+
+
+                        </p:column>
+                        <p:column sortBy="#{item.nomGestionnaire}" filterBy="#{item.nomDistributeur}">
+                            <f:facet name="header">
+                                <h:outputText value="Nom gestionnaire" />
+                            </f:facet>
+
+                            <h:outputText value="#{item.nomDistributeur}" />
+
+
+                        </p:column>
+                        <p:column sortBy="#{item.adresse}" filterBy="#{item.adresse}">
+                            <f:facet name="header">
+                                <h:outputText value="Adresse" />
+                            </f:facet>
+
+                            <h:outputText value="#{item.adresse}" />
+
+
+                        </p:column>
+                        
+
+
+                        <p:column >
+                            <p:commandButton ajax="true" actionListener="#{banqueCelloCashBean.detail}" update=":myform" oncomplete="PF('dlg2').show();" icon="ui-icon fa fa-edit" style="color:white">
+
+                                <f:param name="idBanque" value="#{item.id}" />
+                            </p:commandButton>
+                        </p:column>
+
+
+
+
+
+                    </p:dataTable>
+                </h:form>
+            </p:panel>
+
+            <p:dialog header="Ajouter/Modifier une banque" id="idFormAddBanque" widgetVar="dlg2" modal="true" height="auto">
+                <h:form id="myform">
+                    <p:messages id="msgs" />
+                    <h:panelGrid id="creaMod" columns="1">
+                        <h:outputText value="Code  :*" for="code" />
+                        <h:panelGroup>
+                            <p:inputText id="code" value="#{banqueCelloCashBean.selectedBanqueCellocash.code}"  required="true"/>
+
+                            <p:message for="code" display="icon" />
+                        </h:panelGroup>
+
+
+                        <h:outputText value="Nom :" for="nom" />
+                        <h:panelGroup>
+                            <p:inputText id="nom" value="#{banqueCelloCashBean.selectedBanqueCellocash.nom}"  required="true"/>
+
+                        </h:panelGroup>
+                        <h:outputLabel for="pays" value="Pays :" />
+
+
+
+                        <h:selectOneMenu id="pays" value="#{banqueCelloCashBean.selectedBanqueCellocash.pays}" converter="paysConverter">
+                            <f:selectItem itemLabel="Selectionner un pays" />
+                            <f:selectItems value="#{agenceBancaireBean.listePays}"  var="pays" itemValue="#{pays}" itemLabel="#{pays.designation}" />
+                        </h:selectOneMenu>
+                        <h:outputText value="Préfice compte ordinaire :*" for="prefixeCpteOrdinaire" />
+                        <h:panelGroup>
+                            <p:inputText id="prefixeCpteOrdinaire" value="#{banqueCelloCashBean.selectedBanqueCellocash.prefixeCpteOrdinaire}" />
+
+
+                        </h:panelGroup>
+                        <h:outputText value="Préfice compte epargne :*" for="prefixeCpteneEparg" />
+                        <h:panelGroup>
+                            <p:inputText id="prefixeCpteneEparg" value="#{banqueCelloCashBean.selectedBanqueCellocash.prefixeCpteneEparg}" />
+
+                        </h:panelGroup>
+
+
+
+
+
+                    </h:panelGrid>
+
+
+                    <p:commandButton type="submit" actionListener="#{banqueCelloCashBean.save}" value="Enregistrer" update=":dataForm msgs"  />
+                    <p:commandButton type="submit" style="float: right" value="Annuler" oncomplete="PF('dlg2').hide();" />
+
+                </h:form>
+            </p:dialog>   
+        </div>
+    </ui:define>
+
+</ui:composition>
