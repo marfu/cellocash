@@ -22,6 +22,8 @@ import org.primefaces.model.SortOrder;
  *
  * @author marfu
  */
+
+
 public class LazyCommissionLigneBusinessModel extends LazyDataModel<Commission_Ligne_Business>{
     
      @EJB

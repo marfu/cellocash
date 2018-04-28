@@ -21,7 +21,7 @@ import javax.persistence.Temporal;
  *
  * @author manukey
  */
-/*@Entity
+@Entity
 
 public class Commission_Ligne_Business implements Serializable {
 
@@ -181,4 +181,3 @@ public class Commission_Ligne_Business implements Serializable {
    
 
 }
-*/

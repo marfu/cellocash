@@ -11,22 +11,24 @@
                 <h:form id="menuform">
                     <ph:menu widgetVar="me">
                         <p:menuitem id="om_dashboard" value="Dashboard" icon="fa fa-fw fa-dashboard" outcome="/dashboard" />
-                        <p:menuitem id="om_banque" value="Banques" icon="fa fa-fw fa-university " outcome="/banque" />
-                        <p:menuitem  value="Agences bancaires" icon="fa fa-fw fa-location-arrow " outcome="/agenceBancaire" />
-
-                        <p:submenu   label="Commissions" icon="fa fa-fw fa-pie-chart">
+                        <p:submenu   label="Administration et paramétrage" icon="fa fa-fw fa-pie-chart">
 
 
                             <p:menuitem value="Business" outcome="/commissionBusiness" icon="fa fa-fw fa-pie-chart"/>
                             <p:submenu   label="Client" icon="fa fa-fw fa-pie-chart">
 
-                                <p:menuitem id="om_commissionclient" value="Client" icon="fa fa-fw fa-pie-chart " outcome="/commissionClient" />
-                                <p:menuitem id="om_lignecommissionclient" value="Commission Client" icon="fa fa-fw fa-pie-chart" outcome="/lignecommissionClient" /> 
-
-
-
-
+                                <p:menuitem  value="Banques" icon="fa fa-fw fa-university " outcome="/banque" />
+                                <p:menuitem  value="Agences bancaires" icon="fa fa-fw fa-location-arrow " outcome="/agenceBancaire" />
+                                <p:menuitem  value="Commission client" icon="fa fa-fw fa-pie-chart " outcome="/commissionClient" />
+                                <p:menuitem value="Commission business" outcome="/commissionBusiness" icon="fa fa-fw fa-pie-chart"/>
+                                <p:menuitem  value="Taxes" icon="fa fa-fw fa-pie-chart " outcome="/commissionTaxe" />
                             </p:submenu>
+
+
+
+                        </p:submenu>
+                        <p:submenu   label="Réseau distribution" icon="fa fa-fw fa-pie-chart">
+
 
 
 
@@ -34,10 +36,49 @@
 
 
 
-                        <p:menuitem id="commissionTaxe" value="Taxes" icon="fa fa-fw fa-pie-chart " outcome="/commissionTaxe" />
-
-
                        
+                        <p:submenu   label="Finance" icon="fa fa-fw fa-pie-chart">
+
+
+
+
+                        </p:submenu>
+
+
+
+                        <p:submenu   label="Support" icon="fa fa-fw fa-pie-chart">
+
+
+
+
+
+
+
+                        </p:submenu>
+                        <p:submenu   label="Reporting" icon="fa fa-fw fa-pie-chart">
+
+
+                        </p:submenu>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
                         <p:menuitem  value="Grossiste" icon="fa fa-fw fa-university " outcome="/grossiste" />
                         <p:submenu   label="Systemes" icon="fa fa-sun-o">
                             <p:submenu label="Paramètres" icon="fa fa-fw fa-wrench">
