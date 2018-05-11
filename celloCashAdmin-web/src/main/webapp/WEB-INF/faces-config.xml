@@ -40,7 +40,7 @@
              <redirect />
         </navigation-case>
         
-       
+        <!-- Security-->
         <navigation-case>
             <from-outcome>listUsers</from-outcome>
             <to-view-id>/security/user/listUsers.xhtml</to-view-id>
@@ -79,6 +79,11 @@
         <navigation-case>
             <from-outcome>paramMouvementStatDem</from-outcome>
             <to-view-id>/security/param/paramMouvementStatDem.xhtml</to-view-id>
+             <redirect />
+        </navigation-case>
+        <navigation-case>
+            <from-outcome>historiqueConnexion</from-outcome>
+            <to-view-id>/security/user/historique.xhtml</to-view-id>
              <redirect />
         </navigation-case>
         

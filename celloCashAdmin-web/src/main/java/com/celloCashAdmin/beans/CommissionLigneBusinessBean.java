@@ -7,8 +7,9 @@ package com.celloCashAdmin.beans;
 
 import com.celloCashAdmin.bean.lazyModel.LazyCommissionLigneBusinessModel;
 import com.cellocash.model.Banque_Cellocash;
-import com.cellocash.model.CommissionBusiness;
+
 import com.cellocash.model.Commission_Ligne_Business;
+import com.cellocash.model.dto.CommissionBusinessDTO;
 
 import com.cellocash.model.services.ICommissionLigneBusinessService;
 import java.io.Serializable;
@@ -33,9 +34,9 @@ public class CommissionLigneBusinessBean implements Serializable {
 
     @EJB
     private ICommissionLigneBusinessService commissionLigneBusinessService;
-    private CommissionBusiness commissionBusiness;
+    
 
-    private LazyDataModel<Commission_Ligne_Business> lazyModel;
+    private LazyDataModel<CommissionBusinessDTO> lazyModel;
     private Commission_Ligne_Business selectedComissionBusiness;
     private List<Banque_Cellocash> listBanque;
     private Long idPays;
@@ -48,13 +49,7 @@ public class CommissionLigneBusinessBean implements Serializable {
         this.listBanque = listBanque;
     }
 
-    public CommissionBusiness getCommissionBusiness() {
-        return commissionBusiness;
-    }
-
-    public void setCommissionBusiness(CommissionBusiness commissionBusiness) {
-        this.commissionBusiness = commissionBusiness;
-    }
+   
 
    
 
@@ -74,11 +69,11 @@ public class CommissionLigneBusinessBean implements Serializable {
         this.selectedComissionBusiness = selectedComissionBusiness;
     }
 
-    public LazyDataModel<Commission_Ligne_Business> getLazyModel() {
+    public LazyDataModel<CommissionBusinessDTO> getLazyModel() {
         return lazyModel;
     }
 
-    public void setLazyModel(LazyDataModel<Commission_Ligne_Business> lazyModel) {
+    public void setLazyModel(LazyDataModel<CommissionBusinessDTO> lazyModel) {
         this.lazyModel = lazyModel;
     }
 

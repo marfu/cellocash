@@ -2,6 +2,8 @@ package com.celloCashAdmin.security.bean;
 
 
 
+import com.cellocash.model.HistoriqueConnection;
+import com.cellocash.model.services.IHistoriqueConnectionService;
 import com.cellocash.security.service.ISecurityService;
 import com.cellocash.security.service.entity.Authorization;
 import com.cellocash.security.service.entity.User;
@@ -38,6 +40,8 @@ public class SecurityBean implements Serializable {
 
     @EJB
     ISecurityService securityService;
+    @EJB
+    IHistoriqueConnectionService historiqueConnectionService;
 
    
 
@@ -109,6 +113,20 @@ public class SecurityBean implements Serializable {
             setAlerte(temp.getAlerte());
             //log.info(listPermissions.toString());
             addInfoMessage("Bienvenue " + getUserName() + " , adresse IP : " + getIpAdresse() + " , ordinateur : " + getRemoteName() );
+            HistoriqueConnection u=new HistoriqueConnection();
+            
+            
+            HttpServletRequest request = (HttpServletRequest) (FacesContext.getCurrentInstance().getExternalContext().getRequest());
+            request.getRemoteAddr();
+            
+            
+            u.setBrowser(request.getHeader("User-Agent"));
+            u.setUsername(getUserName());
+            u.setIpAdress( getIpAdresse());
+            
+            historiqueConnectionService.createOrUpdate(u);
+            
+            
             //infoNewVersion();
             return "success-login";
         } else {

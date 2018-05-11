@@ -1,6 +1,6 @@
 package com.celloCashAdmin.security.bean;
 
-
+import com.celloCashAdmin.bean.util.UtilClass;
 import com.cellocash.security.service.ISecurityService;
 import com.cellocash.security.service.entity.Role;
 import com.cellocash.security.service.entity.User;
@@ -15,12 +15,10 @@ import javax.faces.event.ActionEvent;
 
 import org.primefaces.model.DualListModel;
 
-
 import javax.enterprise.context.SessionScoped;
 import javax.faces.view.ViewScoped;
 import javax.inject.Named;
 import org.primefaces.context.RequestContext;
-
 
 @Named("userBean")
 @SessionScoped
@@ -30,8 +28,6 @@ public class UserBean implements Serializable {
 
     @EJB
     ISecurityService securityService;
-
-    
 
     @SuppressWarnings("unused")
     private List<User> users;
@@ -43,14 +39,12 @@ public class UserBean implements Serializable {
     private List<Role> source;
     private List<Role> target;
 
- 
-
     private String oldPassword;
 
     private String newPassword;
 
     private String confirmPassword;
-
+    UtilClass util = new UtilClass();
     //Afficher ou non le motdepasse
     private boolean enabledPassword;
 
@@ -58,9 +52,8 @@ public class UserBean implements Serializable {
         selectedUser = new User();
         source = new ArrayList<>();
         target = new ArrayList<>();
-       
+
         roles = new DualListModel<>(source, target);
-       
 
     }
 
@@ -75,19 +68,16 @@ public class UserBean implements Serializable {
             selectedUser = securityService.getUser(id);
             source.clear();
             target.clear();
-            
 
             source = securityService.getAllRoles();
-           
 
             if (selectedUser.getRole() != null) {
                 source.remove(selectedUser.getRole());
                 target.add(selectedUser.getRole());
             }
-           
 
             roles = new DualListModel<>(source, target);
-           
+
             // return "";
         } else {
             //  return "";
@@ -108,16 +98,24 @@ public class UserBean implements Serializable {
         selectedUser = new User();
         target = new ArrayList<>();
         source = securityService.getAllRoles();
-       // sourcePvt = pointDeVenteService.getAllPVTActive();
+        // sourcePvt = pointDeVenteService.getAllPVTActive();
         //targetPvt = new ArrayList<>();
         roles = new DualListModel<>(source, target);
-        
+
     }
 
     public void saveUser() {
         if (roles.getTarget() != null && roles.getTarget().size() > 0) {
             selectedUser.setRole(roles.getTarget().get(0));
 //            selectedUser.setPvt(pvts.getTarget());
+
+            if (selectedUser.getDateCreation() != null) {
+                String password = util.generate(5);
+                selectedUser.setPassword(password);
+                selectedUser.setFirstConnection(true);
+                System.out.println("Username=" + selectedUser.getUserName() + "------------Password:" + password);
+            }
+
             selectedUser = securityService.createOrUpdateUser(selectedUser);
             users = securityService.getAllUsers();
 
@@ -132,7 +130,7 @@ public class UserBean implements Serializable {
     }
 
     public void changePassword() {
-
+        /*
         if (newPassword.equals(confirmPassword)) {
 
             RequestContext.getCurrentInstance().showMessageInDialog(new FacesMessage(FacesMessage.SEVERITY_INFO, "Info", "Modification du mot de passe effectu\u00E9 avec succ\u00E8s"));
@@ -146,7 +144,23 @@ public class UserBean implements Serializable {
             RequestContext.getCurrentInstance().showMessageInDialog(new FacesMessage(FacesMessage.SEVERITY_ERROR, "ERROR", "les MDP saisi ne correspondent pas"));
 
         }
+         */
 
+        String id = FacesContext.getCurrentInstance().getExternalContext().getRequestParameterMap().get("userId");
+
+        if (id != null && !id.trim().equals("")) {
+            System.out.println("USER ID : " + id);
+
+            selectedUser = securityService.getUser(id);
+              String password = util.generate(5);
+                selectedUser.setPassword(password);
+                selectedUser.setFirstConnection(true);
+                System.out.println("Username=" + selectedUser.getUserName() + "------------Password:" + password);
+ selectedUser = securityService.createOrUpdateUser(selectedUser);
+            // return "";
+        } else {
+            //  return "";
+        }
     }
 
     public void changeMyPassword() {
@@ -219,10 +233,6 @@ public class UserBean implements Serializable {
     public void setSelectedUser(User selectedUser) {
         this.selectedUser = selectedUser;
     }
-
-   
-
-    
 
     public String getOldPassword() {
         return oldPassword;

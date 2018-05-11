@@ -24,7 +24,19 @@
                         <f:facet name="header">
                             <p:commandButton ajax="true" value="Nouveau" styleClass="secondary-button" actionListener="#{agenceBancaireBean.newItem}"  oncomplete="PF('dlg2').show();" update=":myform"/>
                         </f:facet>
+                        <p:column sortBy="#{item.banqueCellocash.nom}" filterBy="#{item.banqueCellocash.nom}">
+                            <f:facet name="header">
+                                <h:outputText value="Banque" />
+                            </f:facet>
+
+                            <h:outputText value="#{item.banqueCellocash.nom}" />
+
+
+                        </p:column>
                         <p:column sortBy="#{item.code}" filterBy="#{item.code}">
+
+
+
                             <f:facet name="header">
                                 <h:outputText value="Code" />
                             </f:facet>
@@ -44,15 +56,28 @@
 
                         </p:column>
 
-                        <p:column sortBy="#{item.banqueCellocash.nom}" filterBy="#{item.banqueCellocash.nom}">
+
+                        <p:column sortBy="#{item.prefixeCpteOrdinaire}" filterBy="#{item.prefixeCpteOrdinaire}">
                             <f:facet name="header">
-                                <h:outputText value="Banque" />
+                                <h:outputText value="Préfice compte ordinaire" />
                             </f:facet>
 
-                            <h:outputText value="#{item.banqueCellocash.nom}" />
+                            <h:outputText value="#{item.prefixeCpteOrdinaire}" />
 
 
                         </p:column>
+
+                        <p:column sortBy="#{item.prefixeCpteneEparg}" filterBy="#{item.prefixeCpteneEparg}">
+                            <f:facet name="header">
+                                <h:outputText value="Préfice compte epargne" />
+                            </f:facet>
+
+                            <h:outputText value="#{item.prefixeCpteneEparg}" />
+
+
+                        </p:column>
+
+
                         <p:column sortBy="#{item.typeAgenceBancaire.designation}" filterBy="#{item.typeAgenceBancaire.designation}">
                             <f:facet name="header">
                                 <h:outputText value="Type Agence" />
@@ -62,7 +87,15 @@
 
 
                         </p:column>
+                        <p:column sortBy="#{item.statut}" filterBy="#{item.statut}">
+                            <f:facet name="header">
+                                <h:outputText value="Statut" />
+                            </f:facet>
 
+                            <h:outputText value="#{item.statut}" />
+
+
+                        </p:column>
 
 
                         <p:column >
@@ -82,50 +115,78 @@
             <p:dialog header="Ajouter/Modifier une agence bancaire" id="idFormAddBanque" widgetVar="dlg2" modal="true" height="auto">
                 <h:form id="myform">
                     <p:messages id="msgs" />
-                    <h:panelGrid id="creaMod" columns="1">
-                        <h:outputText value="Code  :" for="code" />
-                        <h:panelGroup>
-                            <p:inputText id="code" value="#{agenceBancaireBean.selectedAgenceBancaire.code}"/>
+                    <h:panelGrid id="creaMod" columns="2">
+
+                        <h:panelGrid  columns="1">
+                            <h:outputLabel for="pays" value="Pays :" />
+                            <p:selectOneMenu id="pays" value="#{agenceBancaireBean.selectedAgenceBancaire.pays_fk}">
+                                <f:selectItem itemLabel="Selectionner un pays" />
+                                <f:selectItems value="#{agenceBancaireBean.listePays}"  var="pays" itemValue="#{pays.id}" itemLabel="#{pays.designation}" />
+                            </p:selectOneMenu>
+                        </h:panelGrid>
+                        <h:panelGrid  columns="1">
+                            <h:outputLabel for="type" value="Type agence bancaire :" />
+                            <p:selectOneMenu id="type" value="#{agenceBancaireBean.selectedAgenceBancaire.typeAgenceBancaire}" converter="typeAgenceBancaireConverter">
+                                <f:selectItem itemLabel="Selectionner un type"  />
+                                <f:selectItems value="#{agenceBancaireBean.listeTypeAgenceBancaire}" var="type" itemLabel="#{type.designation}" itemValue="#{type}"/>
+                            </p:selectOneMenu> </h:panelGrid>
+                            <h:panelGrid  columns="1">
+                                <h:outputLabel for="banque" value="Banque :" />
+                                <p:selectOneMenu id="banque" value="#{agenceBancaireBean.selectedAgenceBancaire.banqueCellocash}" converter="banqueConverter">
+                                    <f:selectItem itemLabel="Selectionner une banque" />
+                                    <f:selectItems value="#{banqueCelloCashBean.allBanqueCelloCash}"  var="banque" itemValue="#{banque}" itemLabel="#{banque.nom}" />
+                                    <p:ajax listener="#{agenceBancaireBean.selectBanque}" update="prefixeCpteOrdinaire prefixeCpteneEparg" />
+
+                                </p:selectOneMenu> </h:panelGrid>
+                                <h:panelGrid  columns="1">
+
+                                    <h:outputText value="Code  :" for="code" />
+                                    <h:panelGroup>
+                                        <p:inputText id="code" value="#{agenceBancaireBean.selectedAgenceBancaire.code}"/>
 
 
-                        </h:panelGroup>
+                                    </h:panelGroup> 
+                                </h:panelGrid>
+                                <h:panelGrid  columns="1">
+
+                                    <h:outputText value="Designation :" for="nom" />
+                                    <h:panelGroup>
+                                        <p:inputText id="nom" value="#{agenceBancaireBean.selectedAgenceBancaire.designation}"/>
+
+                                    </h:panelGroup> </h:panelGrid>
+
+                                <h:panelGrid  columns="1">
+
+                                    <h:outputText value="Statut " />
+                                    <p:inputSwitch value="#{agenceBancaireBean.selectedAgenceBancaire.statut}" />
+
+                                </h:panelGrid> <h:panelGrid  columns="1">
+                                    <h:outputText value="Préfice compte ordinaire :*" />
+                                    <h:panelGroup>
+                                        <p:inputText id="prefixeCpteOrdinaire" value="#{agenceBancaireBean.selectedAgenceBancaire.prefixeCpteOrdinaire}" />
 
 
-                        <h:outputText value="Designation :" for="nom" />
-                        <h:panelGroup>
-                            <p:inputText id="nom" value="#{agenceBancaireBean.selectedAgenceBancaire.designation}"/>
+                                    </h:panelGroup> </h:panelGrid>
+                                <h:panelGrid  columns="1">
+                                    <h:outputText value="Préfice compte epargne :*" />
+                                    <h:panelGroup>
+                                        <p:inputText id="prefixeCpteneEparg" value="#{agenceBancaireBean.selectedAgenceBancaire.prefixeCpteneEparg}" />
 
-                        </h:panelGroup>
+                                    </h:panelGroup>
 
-
-
-                        <h:outputLabel for="banque" value="Banque :" />
-
-
-
-                        <p:selectOneMenu id="banque" value="#{agenceBancaireBean.selectedAgenceBancaire.banqueCellocash}" converter="banqueConverter">
-                            <f:selectItem itemLabel="Selectionner une banque" />
-                            <f:selectItems value="#{banqueCelloCashBean.allBanqueCelloCash}"  var="banque" itemValue="#{banque}" itemLabel="#{banque.nom}" />
-                        </p:selectOneMenu>
-
-
-                        <h:outputLabel for="type" value="Type agence bancaire :" />
-                        <p:selectOneMenu id="type" value="#{agenceBancaireBean.selectedAgenceBancaire.typeAgenceBancaire}" converter="typeAgenceBancaireConverter">
-                            <f:selectItem itemLabel="Selectionner un type"  />
-                            <f:selectItems value="#{agenceBancaireBean.listeTypeAgenceBancaire}" var="type" itemLabel="#{type.designation}" itemValue="#{type}"/>
-                        </p:selectOneMenu>
+                                </h:panelGrid>
 
 
 
-                    </h:panelGrid>
+                            </h:panelGrid>
 
 
-                    <p:commandButton type="submit" action="#{agenceBancaireBean.save}" value="Enregistrer" update=":dataForm msgs"  />
-                    <p:commandButton type="submit" style="float: right" value="Annuler" oncomplete="PF('dlg2').hide();" />
+                            <p:commandButton type="submit" action="#{agenceBancaireBean.save}" value="Enregistrer" update=":dataForm msgs"  />
+                            <p:commandButton type="submit" style="float: right" value="Annuler" oncomplete="PF('dlg2').hide();" />
 
-                </h:form>
-            </p:dialog>   
-        </div>
-    </ui:define>
+                            </h:form>
+                            </p:dialog>   
+                            </div>
+                            </ui:define>
 
-</ui:composition>
+                            </ui:composition>

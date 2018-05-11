@@ -1,5 +1,7 @@
 package com.cellocash.security.service.entity;
 
+import com.cellocash.model.Agence_Bancaire;
+import com.cellocash.model.Banque_Cellocash;
 import java.io.Serializable;
 import java.util.Date;
 import java.util.List;
@@ -16,197 +18,216 @@ import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
 
-
-
 import javax.persistence.CascadeType;
 import javax.persistence.FetchType;
 import org.apache.commons.codec.digest.DigestUtils;
-
 
 @Entity
 @Table(name = "USER")
 public class User implements Serializable {
 
-	private static final long serialVersionUID = 7199807568018597880L;
+    private static final long serialVersionUID = 7199807568018597880L;
 
-	@Id
+    @Id
 //	@NotNull
-	@Column(unique = true, name = "NOM_UTILISATEUR_PK")
-	private String userName;
+    @Column(unique = true, name = "NOM_UTILISATEUR_PK")
+    private String userName;
 
 //	@Email
-	@Column(name = "EMAIL")
-	private String email;
+    @Column(name = "EMAIL")
+    private String email;
 
-	@Column(name = "SI_ACTIF")
-	private boolean enable;
+    @Column(name = "SI_ACTIF")
+    private boolean enable;
 
+    @Column(name = "FIRST_CONNEXION")
+    private boolean firstConnection;
+    
+    @Column(name = "ALERTE_SI_NB", columnDefinition = "bigint(11) default 100")
+    private int alerte = 100;
 
-	@Column(name = "ALERTE_SI_NB", columnDefinition="bigint(11) default 100")
-	private int alerte = 100;
+    @ManyToOne
+    private Role role;
 
+    @Column(name = "NOM_DE_FAMILLE")
+    private String familyName;
 
-	@ManyToOne
-	private Role role;
+    @Column(name = "PRENOM")
+    private String firstName;
 
-	@Column(name = "NOM_DE_FAMILLE")
-	private String familyName;
+    @Column(name = "MOT_DE_PASSE")
+    private String password;
 
-	@Column(name = "PRENOM")
-	private String firstName;
-
-	@Column(name = "MOT_DE_PASSE")
-	private String password;
-
-	
-
-	@Column(name = "MATRICULE")
-	private String matricule;
+    @Column(name = "MATRICULE")
+    private String matricule;
 
 //	@NotNull
-	@Column(name = "DATE_CREATION")
-	@Temporal(TemporalType.TIMESTAMP)
-	private Date dateCreation=new Date();
+    @Column(name = "DATE_CREATION")
+    @Temporal(TemporalType.TIMESTAMP)
+    private Date dateCreation = new Date();
 
-	@Column(name = "DATE_DERNIERE_CONNEXION")
-	@Temporal(TemporalType.TIMESTAMP)
-	private Date dateDerniereConnexion;
+    @Column(name = "DATE_DERNIERE_CONNEXION")
+    @Temporal(TemporalType.TIMESTAMP)
+    private Date dateDerniereConnexion;
 
-	public User() {
-	}
+    @ManyToOne(optional = true)
+    @JoinColumn(name = "IDENTIFIANT_BANQUE_FK", referencedColumnName = "IDENTIFIANT_BANQUE")
+    private Banque_Cellocash banqueCellocash;
 
-	@Override
-	public int hashCode() {
-		return getUserName().hashCode();
-	}
+    @ManyToOne(optional = true)
+    @JoinColumn(name = "TYPE_AGENCE_BANCAIRE_FK", referencedColumnName = "IDENTIFIANT_AGENCE")
+    private Agence_Bancaire agenceBancaire;
 
-	public Date getDateCreation() {
-		return dateCreation;
-	}
+    public User() {
+    }
 
-	public void setDateCreation(Date dateCreation) {
-		this.dateCreation = dateCreation;
-	}
+    @Override
+    public int hashCode() {
+        return getUserName().hashCode();
+    }
 
-	public Date getDateDerniereConnexion() {
-		return dateDerniereConnexion;
-	}
+    public Date getDateCreation() {
+        return dateCreation;
+    }
 
-	public void setDateDerniereConnexion(Date dateDerniereConnexion) {
-		this.dateDerniereConnexion = dateDerniereConnexion;
-	}
+    public void setDateCreation(Date dateCreation) {
+        this.dateCreation = dateCreation;
+    }
 
-	
-	public String getUserName() {
-		return userName;
-	}
+    public Date getDateDerniereConnexion() {
+        return dateDerniereConnexion;
+    }
 
-	public void setUserName(String userName) {
-		this.userName = userName;
-	}
+    public void setDateDerniereConnexion(Date dateDerniereConnexion) {
+        this.dateDerniereConnexion = dateDerniereConnexion;
+    }
 
-	public String getEmail() {
-		return email;
-	}
+    public String getUserName() {
+        return userName;
+    }
 
-	public void setEmail(String email) {
-		this.email = email;
-	}
+    public void setUserName(String userName) {
+        this.userName = userName;
+    }
 
-	public boolean isEnable() {
-		return enable;
-	}
+    public String getEmail() {
+        return email;
+    }
 
-	public void setEnable(boolean enable) {
-		this.enable = enable;
-	}
+    public void setEmail(String email) {
+        this.email = email;
+    }
 
+    public boolean isEnable() {
+        return enable;
+    }
 
-	@Override
-	public boolean equals(Object obj) {
-		if (this == obj) {
-			return true;
-		}
-		if (obj == null) {
-			return false;
-		}
-		if (getClass() != obj.getClass()) {
-			return false;
-		}
-		final User other = (User) obj;
-		if (getUserName() == null) {
-			if (other.getUserName() != null) {
-				return false;
-			}
-		} else if (!getUserName().equals(other.getUserName())) {
-			return false;
-		}
-		return true;
-	}
+    public void setEnable(boolean enable) {
+        this.enable = enable;
+    }
 
-	public String getFamilyName() {
-		return familyName;
-	}
+    @Override
+    public boolean equals(Object obj) {
+        if (this == obj) {
+            return true;
+        }
+        if (obj == null) {
+            return false;
+        }
+        if (getClass() != obj.getClass()) {
+            return false;
+        }
+        final User other = (User) obj;
+        if (getUserName() == null) {
+            if (other.getUserName() != null) {
+                return false;
+            }
+        } else if (!getUserName().equals(other.getUserName())) {
+            return false;
+        }
+        return true;
+    }
 
-	public void setFamilyName(String familyName) {
-		this.familyName = familyName;
-	}
+    public String getFamilyName() {
+        return familyName;
+    }
 
-	public String getFirstName() {
-		return firstName;
-	}
+    public void setFamilyName(String familyName) {
+        this.familyName = familyName;
+    }
 
-	public void setFirstName(String firstName) {
-		this.firstName = firstName;
-	}
+    public String getFirstName() {
+        return firstName;
+    }
 
-	public String getPassword() {
-		return password;
-	}
+    public void setFirstName(String firstName) {
+        this.firstName = firstName;
+    }
 
-	public void setPassword(String password) {
-		this.password  =  DigestUtils.md5Hex(password);
-	}
+    public String getPassword() {
+        return password;
+    }
 
-	
-        
-	public String getMatricule() {
-		return matricule;
-	}
+    public void setPassword(String password) {
+        this.password = DigestUtils.md5Hex(password);
+    }
 
-	public void setMatricule(String matricule) {
-		this.matricule = matricule;
-	}
+    public String getMatricule() {
+        return matricule;
+    }
 
+    public void setMatricule(String matricule) {
+        this.matricule = matricule;
+    }
 
-	public boolean hasRole(String role) {
-		if(getRole() == null ){
-			return false;
-		}else if(getRole().getDesignation().equals(role)){
-			return true;
-		}
-		
-		return false;
-	}
-	
-	
+    public boolean hasRole(String role) {
+        if (getRole() == null) {
+            return false;
+        } else if (getRole().getDesignation().equals(role)) {
+            return true;
+        }
 
-	public Role getRole() {
-		return role;
-	}
+        return false;
+    }
 
-	public void setRole(Role role) {
-		this.role = role;
-	}
+    public Role getRole() {
+        return role;
+    }
 
-	public int getAlerte() {
-		return alerte;
-	}
+    public void setRole(Role role) {
+        this.role = role;
+    }
 
-	public void setAlerte(int alerte) {
-		this.alerte = alerte;
-	}
+    public int getAlerte() {
+        return alerte;
+    }
 
-	
+    public void setAlerte(int alerte) {
+        this.alerte = alerte;
+    }
+
+    public Banque_Cellocash getBanqueCellocash() {
+        return banqueCellocash;
+    }
+
+    public void setBanqueCellocash(Banque_Cellocash banqueCellocash) {
+        this.banqueCellocash = banqueCellocash;
+    }
+
+    public Agence_Bancaire getAgenceBancaire() {
+        return agenceBancaire;
+    }
+
+    public void setAgenceBancaire(Agence_Bancaire agenceBancaire) {
+        this.agenceBancaire = agenceBancaire;
+    }
+
+    public boolean isFirstConnection() {
+        return firstConnection;
+    }
+
+    public void setFirstConnection(boolean firstConnection) {
+        this.firstConnection = firstConnection;
+    }
 
 }

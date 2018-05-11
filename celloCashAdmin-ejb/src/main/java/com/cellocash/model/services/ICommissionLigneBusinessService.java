@@ -6,6 +6,7 @@
 package com.cellocash.model.services;
 
 import com.cellocash.model.Commission_Ligne_Business;
+import com.cellocash.model.dto.CommissionBusinessDTO;
 import java.util.List;
 
 /**
@@ -18,7 +19,7 @@ public interface ICommissionLigneBusinessService {
 
     public Commission_Ligne_Business getDetail(long id);
 
-    public List<Commission_Ligne_Business> executeLazyQuery(String query, int first, int pageSize);
+    public List<CommissionBusinessDTO> executeLazyQuery(String query, int first, int pageSize);
 
     public List<Commission_Ligne_Business> getAll();
 

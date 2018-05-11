@@ -18,4 +18,5 @@ public interface IAgenceBancaireService {
     public List<Agence_Bancaire> executeLazyQuery(String query, int first, int pageSize);
     public Long getRowCount(String query);
      public List<Agence_Bancaire> findAllByBanque(long idBanqe);
+     public List<Agence_Bancaire> findAll();
 }

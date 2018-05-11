@@ -1,0 +1,81 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:h="http://java.sun.com/jsf/html"
+                xmlns:f="http://java.sun.com/jsf/core"
+                xmlns:ui="http://java.sun.com/jsf/facelets"
+                xmlns:p="http://primefaces.org/ui"
+                template="/WEB-INF/template.xhtml">
+
+
+
+    <ui:define name="head"></ui:define>
+    <ui:define name="viewname">
+        <li><p:link outcome="/dashboard">Historique connexion </p:link></li>
+    </ui:define>
+    <style>
+        .hlink{
+            color:red;
+        }
+    </style>
+    <ui:define name="content">
+        <div class="ui-g layout-dashboard">
+            <p:panel id="pane1" header="Historique connexion">
+                <h:form id="dataForm">
+                    <p:dataTable id="dataUser" var="item"   value="#{historiqueBean.lazyModel}" paginator="true" rows="10"
+                                 paginatorTemplate="{RowsPerPageDropdown} {FirstPageLink} {PreviousPageLink} {CurrentPageReport} {NextPageLink} {LastPageLink}"  
+                                 rowsPerPageTemplate="10,20,50" lazy="true" selection="#{banqueCelloCashBean.selectedListBanqueCellocash}" >
+                     
+                        <p:column sortBy="#{item.username}" filterBy="#{item.username}">
+                            <f:facet name="header">
+                                <h:outputText value="Username" />
+                            </f:facet>
+
+                         
+                            <h:outputText value="#{item.username}" />
+
+
+                        </p:column>
+                        <p:column sortBy="#{item.dateConnexion}" filterBy="#{item.dateConnexion}">
+                            <f:facet name="header">
+                                <h:outputText value="Date connexion" />
+                            </f:facet>
+
+                            <h:outputText value="#{item.dateConnexion}" />
+
+
+                        </p:column>
+                        <p:column sortBy="#{item.browser}" filterBy="#{item.browser}">
+                            <f:facet name="header">
+                                <h:outputText value="Browser" />
+                            </f:facet>
+
+                            <h:outputText value="#{item.browser}" />
+
+
+                        </p:column>
+                        <p:column sortBy="#{item.ipAdress}" filterBy="#{item.ipAdress}">
+                            <f:facet name="header">
+                                <h:outputText value="Ip adress" />
+                            </f:facet>
+
+                            <h:outputText value="#{item.ipAdress}" />
+
+
+                        </p:column>
+                        
+
+
+                        
+
+
+
+
+
+                    </p:dataTable>
+                </h:form>
+            </p:panel>
+
+            
+        </div>
+    </ui:define>
+
+</ui:composition>

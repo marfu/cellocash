@@ -8,11 +8,13 @@ import com.cellocash.model.services.ICommissionClientService;
 import com.cellocash.model.services.ICommissionLigneBusinessService;
 import com.cellocash.model.services.ICommissionTaxeService;
 import com.cellocash.model.services.IGrossisteService;
+import com.cellocash.model.services.IHistoriqueConnectionService;
 import com.cellocash.model.services.IImpotTaxeService;
 import com.cellocash.model.services.ILigneCommissionClientService;
 import com.cellocash.model.services.ILigneCommissionTaxeService;
 import com.cellocash.model.services.IOperationCelloCashService;
 import com.cellocash.model.services.IPaysService;
+import com.cellocash.model.services.IProgrammeFacturationBusinessService;
 import com.cellocash.model.services.ITypeAgenceBancaireService;
 import com.cellocash.model.services.ITypeImpotTaxeService;
 import com.cellocash.security.service.ISecurityService;
@@ -171,6 +173,22 @@ public class FactoryBean {
         public ITypeImpotTaxeService getTypeImpotTaxeService() {
 		try {
 			return getLocalService(ITypeImpotTaxeService.class, "TypeImpotTaxeServiceImpl");
+		} catch (NamingException e) {
+			throw new RuntimeException(e);
+		}
+	}
+        public IProgrammeFacturationBusinessService getProgrammeFacturationBusinessService() {
+		try {
+			return getLocalService(IProgrammeFacturationBusinessService.class, "ProgrammeFacturationBusinessServiceImpl");
+		} catch (NamingException e) {
+			throw new RuntimeException(e);
+		}
+	}
+        
+        
+         public IHistoriqueConnectionService getHistoriqueConnectionService() {
+		try {
+			return getLocalService(IHistoriqueConnectionService.class, "HistoriqueConnectionServiceImpl");
 		} catch (NamingException e) {
 			throw new RuntimeException(e);
 		}

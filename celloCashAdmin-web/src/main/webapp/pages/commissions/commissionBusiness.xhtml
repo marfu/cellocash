@@ -20,7 +20,7 @@
         <div class="ui-g layout-dashboard">
             <p:panel id="pane1" header="Gestion des commission business">
                 <h:form id="dataForm">
-                    <p:dataTable id="dataUser" var="item" filterEvent="enter"  value="#{commissionLigneBusinessBean.lazyModel}" paginator="true" rows="10"
+                    <p:dataTable id="dataUser" var="item"  value="#{commissionLigneBusinessBean.lazyModel}" paginator="true" rows="10"
                                  paginatorTemplate="{RowsPerPageDropdown} {FirstPageLink} {PreviousPageLink} {CurrentPageReport} {NextPageLink} {LastPageLink}"  
                                  rowsPerPageTemplate="10,20,50" lazy="true">
                         <f:facet name="header">
@@ -28,41 +28,58 @@
                         </f:facet>
 
 
-                        
-                        
-                        <p:column sortBy="#{item.numeroLigne}" filterBy="#{item.numeroLigne}">
+                        <p:column sortBy="#{item.banque}" filterBy="#{item.banque}">
                             <f:facet name="header">
-                                <h:outputText value="Numero ligne" />
+                                <h:outputText value="Banque" />
                             </f:facet>
 
-                            <h:outputText value="#{item.numeroLigne}" />
+                            <h:outputText value="#{item.banque}" />
 
 
                         </p:column>
-                        <p:column sortBy="#{item.mntBorneSup}" filterBy="#{item.mntBorneSup}">
+
+                        <p:column sortBy="#{item.agenceBancaire}" filterBy="#{item.agenceBancaire}">
                             <f:facet name="header">
-                                <h:outputText value="Montant" />
+                                <h:outputText value="Agence bancaire" />
                             </f:facet>
 
-                            <h:outputText value="#{item.mntBorneSup}" />
+                            <h:outputText value="#{item.agenceBancaire}" />
 
 
                         </p:column>
-                        <p:column sortBy="#{item.commissionEnValeur}" filterBy="#{item.commissionEnValeur}">
+                        <p:column sortBy="#{item.operationBusiness}" filterBy="#{item.operationBusiness}">
                             <f:facet name="header">
-                                <h:outputText value="Montant commission" />
+                                <h:outputText value="Operation business" />
                             </f:facet>
 
-                            <h:outputText value="#{item.commissionEnValeur}" />
+                            <h:outputText value="#{item.operationBusiness}" />
 
 
                         </p:column>
-                        <p:column sortBy="#{item.commissionEnPourcentage}" filterBy="#{item.commissionEnPourcentage}">
+                        <p:column sortBy="#{item.programmeBusiness}" filterBy="#{item.programmeBusiness}">
                             <f:facet name="header">
-                                    <h:outputText value="Pourcentage commission" />
+                                <h:outputText value="Programme business" />
                             </f:facet>
 
-                            <h:outputText value="#{item.commissionEnPourcentage}" />
+                            <h:outputText value="#{item.programmeBusiness}" />
+
+
+                        </p:column>
+                        <p:column sortBy="#{item.dateEffet}" filterBy="#{item.dateEffet}">
+                            <f:facet name="header">
+                                <h:outputText value="Date effet" />
+                            </f:facet>
+
+                            <h:outputText value="#{item.dateEffet}" />
+
+
+                        </p:column>
+                        <p:column sortBy="#{item.dateEffet}" filterBy="#{item.dateEffet}">
+                            <f:facet name="header">
+                                <h:outputText value="Date Fin" />
+                            </f:facet>
+
+                            <h:outputText value="#{item.dateEffet}" />
 
 
                         </p:column>
@@ -76,7 +93,12 @@
                             </p:commandButton>
                         </p:column>
 
+                        <p:column >
+                            <p:commandButton ajax="true" actionListener="#{commissionLigneBusinessBean.detail}" update=":myform" oncomplete="PF('dlg3').show();" icon="ui-icon fa fa-edit" style="color:white">
 
+                                <f:param name="idCommissionBusiness" value="#{item.id}" />
+                            </p:commandButton>
+                        </p:column>
 
 
 
@@ -94,21 +116,31 @@
 
 
 
-
-
-
-                                <h:outputLabel value="Commission business :" />
-
-                                <p:selectOneMenu  value="#{commissionLigneBusinessBean.selectedComissionBusiness.commissionsBusiness}" converter="commissionBusinessConveter">
-
-                                    <f:selectItem itemLabel="Commission business" />
-                                    <f:selectItems value="#{commissionBusinessBean.allBCommissionBusiness}"  var="com" itemValue="#{com}" itemLabel="#{com.code}" />
+                                <h:outputLabel for="pays" value="Pays :" />
+                                <p:selectOneMenu id="pays" value="#{commissionLigneBusinessBean.selectedComissionBusiness.pays_fk}" >
+                                    <f:selectItem itemLabel="Selectionner un pays" />
+                                    <f:selectItems value="#{agenceBancaireBean.listePays}"  var="pays" itemValue="#{pays.id}" itemLabel="#{pays.designation}" />
                                 </p:selectOneMenu>
 
 
 
+                                <h:outputLabel for="banque" value="Banque :" />
 
 
+
+                                <p:selectOneMenu id="banque" value="#{commissionLigneBusinessBean.selectedComissionBusiness.banque_Cellocash_fk}" >
+                                    <f:selectItem itemLabel="Selectionner une banque" />
+                                    <f:selectItems value="#{banqueCelloCashBean.allBanqueCelloCash}"  var="banque" itemValue="#{banque.id}" itemLabel="#{banque.nom}" />
+                                </p:selectOneMenu>
+
+                                <h:outputLabel  value="Agence bancaire :" />
+
+
+
+                                <p:selectOneMenu  value="#{commissionLigneBusinessBean.selectedComissionBusiness.agenceBancaire_fk}" >
+                                    <f:selectItem itemLabel="Selectionner une Agence" />
+                                    <f:selectItems value="#{agenceBancaireBean.listeAgenceBancaire}"  var="item" itemValue="#{item.id}" itemLabel="#{item.designation}" />
+                                </p:selectOneMenu>
 
                                 <h:outputLabel for="operation" value="Operations business :" />
                                 <p:selectOneMenu  value="#{commissionLigneBusinessBean.selectedComissionBusiness.operationCellocah}" converter="operationCellocashConverter">
@@ -128,12 +160,13 @@
 
                     <p:fieldset legend="Commissions " style="margin-bottom:20px">
                         <h:panelGrid  columns="1">
-
                             <h:panelGrid  columns="4">
-                                <h:outputText value="Ligne commission  :*"  />
-                                <h:panelGroup>
-                                    <p:inputText  value="#{commissionLigneBusinessBean.selectedComissionBusiness.numeroLigne}"  />
-                                </h:panelGroup>
+                                <h:outputLabel  value="Programme business :" />
+                                <p:selectOneMenu  value="#{commissionLigneBusinessBean.selectedComissionBusiness.programmeFacturationBusinesse}" converter="programmeFacturationBusinessConverter">
+
+                                    <f:selectItem itemLabel="Programme business" />
+                                    <f:selectItems value="#{programmeFacturationBean.allProgrammeFacturation}"  var="pro" itemValue="#{pro}" itemLabel="#{pro.designation}" />
+                                </p:selectOneMenu>
 
 
                                 <h:outputText value="Date effet :"/>
@@ -142,61 +175,9 @@
 
                                 </h:panelGroup>
 
-                            </h:panelGrid>
-                            <h:panelGrid  columns="6">
-                                <h:outputText value="Montant jusqu'a  :*"  />
-                                <h:panelGroup>
-                                    <p:inputText  value="#{commissionLigneBusinessBean.selectedComissionBusiness.mntBorneSup}"  />
-                                </h:panelGroup>
-
-
-                                <h:outputText value="Commission valeur :"/>
-                                <h:panelGroup>
-                                    <p:inputText  value="#{commissionLigneBusinessBean.selectedComissionBusiness.commissionEnValeur}"  />
-
-                                </h:panelGroup>
-                                <h:outputText value="Commission en  %:"/>
-                                <h:panelGroup>
-                                    <p:inputText  value="#{commissionLigneBusinessBean.selectedComissionBusiness.commissionEnPourcentage}"  />
-
-                                </h:panelGroup>
-
-
-
-
-
 
                             </h:panelGrid>
-                            <h:panelGrid  columns="4">
-                                <h:outputText value="Commission Master Valeur :*"  />
-                                <h:panelGroup>
-                                    <p:inputText  value="#{commissionLigneBusinessBean.selectedComissionBusiness.partCommissionDealerValeur}" />
-                                </h:panelGroup>
 
-
-                                <h:outputText value="Commission  Master en % :"/>
-                                <h:panelGroup>
-                                    <p:inputText  value="#{commissionLigneBusinessBean.selectedComissionBusiness.partCommissionDealerPourcentage}"  />
-
-                                </h:panelGroup>
-                                <h:outputText value="Commission distributeur valeur  :"/>
-                                <h:panelGroup>
-                                    <p:inputText  value="#{commissionLigneBusinessBean.selectedComissionBusiness.partCommissionSubDealerValeur}"  />
-
-                                </h:panelGroup>
-                                <h:outputText value="Commission distributeur en % :"/>
-                                <h:panelGroup>
-                                    <p:inputText  value="#{commissionLigneBusinessBean.selectedComissionBusiness.partCommissionSubDealerPourcentage}" />
-
-                                </h:panelGroup>
-
-
-
-
-
-
-
-                            </h:panelGrid>
 
 
                         </h:panelGrid>
@@ -205,6 +186,40 @@
 
                     <p:commandButton type="submit" action="#{commissionLigneBusinessBean.save}" value="Enregistrer" update=":dataForm msgs"  />
                     <p:commandButton type="submit" style="float: right" value="Annuler" oncomplete="PF('dlg2').hide();" />
+
+                </h:form>
+            </p:dialog>   
+            
+            
+            
+             <p:dialog header="Ajouter/Modifier une Commission" id="idFormAddPalier" widgetVar="dlg3" modal="true" height="auto">
+                <h:form id="formAddPalier">
+                    <p:messages id="idFormPalier" />
+
+                    
+<p:dataTable var="car" value="#{dtBasicView.cars}">
+     <f:facet name="header">
+         <p:commandButton ajax="true" value="Nouveau" styleClass="secondary-button" actionListener="#{commissionLigneBusinessBean.newItem}"  oncomplete="PF('dlg2').show();" update=":myform"/>
+    </f:facet>
+    <p:column headerText="Id">
+        <h:outputText value="#{car.id}" />
+    </p:column>
+ 
+    <p:column headerText="Year">
+        <h:outputText value="#{car.year}" />
+    </p:column>
+ 
+    <p:column headerText="Brand">
+        <h:outputText value="#{car.brand}" />
+    </p:column>
+ 
+    <p:column headerText="Color">
+        <h:outputText value="#{car.color}" />
+    </p:column>
+</p:dataTable>
+
+                   
+                    <p:commandButton type="submit" style="float: right" value="Annuler" oncomplete="PF('dlg3').hide();" />
 
                 </h:form>
             </p:dialog>   

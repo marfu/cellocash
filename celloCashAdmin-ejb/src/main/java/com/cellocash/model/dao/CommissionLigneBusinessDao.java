@@ -6,6 +6,7 @@
 package com.cellocash.model.dao;
 
 import com.cellocash.model.Commission_Ligne_Business;
+import com.cellocash.model.dto.CommissionBusinessDTO;
 import java.util.List;
 
 /**
@@ -19,7 +20,7 @@ public interface CommissionLigneBusinessDao extends GenericDao<Commission_Ligne_
 
     public Commission_Ligne_Business getDetail(long b);
     
-    public List<Commission_Ligne_Business> executeLazyQuery(String query, int first, int pageSize);
+    public List<CommissionBusinessDTO> executeLazyQuery(String query, int first, int pageSize);
 
     public Long getRowCount(String query);
 }

@@ -19,56 +19,89 @@
             </p:dialog>
             <p:dialog header="Ajouter/Modifier un utilisateur" widgetVar="dlg2" modal="true" height="auto">
                 <h:form id="myform">
-                    <h:panelGrid columns="3">
-                        <h:panelGrid id="creaMod" columns="3">
-                            <h:outputText value="Username  :*" for="userName" />
-                            <h:panelGroup>
-                                <p:inputText id="userName" value="#{userBean.selectedUser.userName}" required="true">
-                                    <p:ajax event="blur" update="msgUserName" />
-                                </p:inputText>
-                            </h:panelGroup>
-                            <p:message id="msgUserName" for="userName" />
+                    <p:fieldset legend="Identification banque, agence" style="margin-bottom:20px">
+                        <h:panelGrid  columns="4">
 
-                            <h:outputText value="Firstname :" for="familyName" />
+
+
+                            <h:outputLabel for="pays" value="Pays :" />
+                            <p:selectOneMenu id="pays" value="#{commissionLigneBusinessBean.selectedComissionBusiness.pays_fk}" >
+                                <f:selectItem itemLabel="Selectionner un pays" />
+                                <f:selectItems value="#{agenceBancaireBean.listePays}"  var="pays" itemValue="#{pays.id}" itemLabel="#{pays.designation}" />
+                            </p:selectOneMenu>
+
+
+
+                            <h:outputLabel for="banque" value="Banque :" />
+
+
+
+                            <p:selectOneMenu id="banque" value="#{userBean.selectedUser.banqueCellocash}" converter="banqueConverter" >
+                                <f:selectItem itemLabel="Selectionner une banque" />
+                                <f:selectItems value="#{banqueCelloCashBean.allBanqueCelloCash}"  var="banque" itemValue="#{banque}" itemLabel="#{banque.nom}"  />
+                            </p:selectOneMenu>
+
+                            <h:outputLabel  value="Agence :" />
+
+
+
+                            <p:selectOneMenu  value="#{userBean.selectedUser.agenceBancaire}" converter="AgenceBancaireConverter">
+                                <f:selectItem itemLabel="Selectionner une agence" />
+                                <f:selectItems value="#{agenceBancaireBean.listeAgenceBancaire}"  var="item" itemValue="#{item}" itemLabel="#{item.designation}" />
+                            </p:selectOneMenu>
+
+
+
+                        </h:panelGrid>
+                    </p:fieldset>
+                    <p:fieldset legend="Details utilisateur" style="margin-bottom:20px">
+                        <h:panelGrid id="creaMod" columns="4">
+
+
+
+                            <h:outputText value="Nom :" for="familyName" />
                             <h:panelGroup>
                                 <p:inputText id="familyName" value="#{userBean.selectedUser.familyName}">
-                                    <p:ajax event="blur" update="msgFamilyName" />
+                                    <p:ajax event="blur" />
                                 </p:inputText>
                             </h:panelGroup>
-                            <p:message id="msgFamilyName" for="familyName" />
-                            
-                            <h:outputText value="Lastname :*" for="firstName" />
+
+
+                            <h:outputText value="Penom :*" for="firstName" />
                             <h:panelGroup>
                                 <p:inputText id="firstName" value="#{userBean.selectedUser.firstName}">
-                                    <p:ajax event="blur" update="msgFirstName" />
+                                    <p:ajax event="blur"  />
                                 </p:inputText>
                             </h:panelGroup>
-                            <p:message id="msgFirstName" for="firstName" />
-                            
+
+
                             <h:outputText value="Email :*" for="email" />
                             <h:panelGroup>
                                 <p:inputText id="email" value="#{userBean.selectedUser.email}">
-                                    <p:ajax event="blur" update="msgEmail" />
+                                    <p:ajax event="blur" />
                                 </p:inputText>
                             </h:panelGroup>
-                            <p:message id="msgEmail" for="email" />
-                            
-                            <h:outputText value="Password :" for="password" rendered="#{userBean.enabledPassword == true}"/>
-                            <h:panelGroup rendered="#{userBean.enabledPassword == true}">
-                                <p:inputText id="password" value="#{userBean.selectedUser.password}" type="password">
-                                    <p:ajax event="blur" update="msgPassword" />
+
+                            <h:outputText value="Login  :*" for="userName" />
+                            <h:panelGroup>
+                                <p:inputText id="userName" value="#{userBean.selectedUser.userName}" required="true">
+                                    <p:ajax event="blur"  />
                                 </p:inputText>
                             </h:panelGroup>
-                            <p:message id="msgPassword" for="password" rendered="#{userBean.enabledPassword == true}"/>
+
+
+
 
                             <h:outputText value="Actif: " />
                             <p:selectBooleanCheckbox value="#{userBean.selectedUser.enable}">
-                              
+
                             </p:selectBooleanCheckbox>
 
 
                         </h:panelGrid>
-                        <hr style="height:300px;margin-left: 10px;margin-right: 10px;  color: #e4e6e8;"></hr>
+
+
+
                         <h:panelGrid columns="2">
 
                             <h:outputText value="Roles :" />
@@ -78,12 +111,11 @@
                                     <f:facet name="targetCaption">Selected role (s)</f:facet>
                                 </p:pickList>
                             </h:panelGroup>
+                        </h:panelGrid></p:fieldset>
 
-                        </h:panelGrid>
-                    </h:panelGrid>
-                    <p:commandButton type="submit" action="#{userBean.saveUser}" value="Save" update=":dataForm"  />
-                    <p:commandButton type="submit" style="float: right" value="Reset" oncomplete="PF('dlg2').hide();" />
 
+                    <p:commandButton type="submit" action="#{userBean.saveUser}" value="Valider" update=":dataForm"  />
+                    <p:commandButton type="submit" style="float: right" value="Annuler" oncomplete="PF('dlg2').hide();" />
                 </h:form>
             </p:dialog>   
             <p:dialog header="Reinitialiser mot de passe" widgetVar="passwordReini" modal="true" height="auto">
@@ -152,6 +184,18 @@
                             <h:outputText value="#{usr.firstName}" />
                         </p:column>
 
+                        <p:column sortBy="#{usr.banqueCellocash.nom}" filterBy="#{usr.banqueCellocash.nom}">
+                            <f:facet name="header">
+                                <h:outputText value="Banque" />
+                            </f:facet>
+                            <h:outputText value="#{usr.banqueCellocash.nom}" />
+                        </p:column>
+                        <p:column sortBy="#{usr.agenceBancaire.designation}" filterBy="#{usr.agenceBancaire.designation}">
+                            <f:facet name="header">
+                                <h:outputText value="Agence bancaire" />
+                            </f:facet>
+                            <h:outputText value="#{usr.agenceBancaire.designation}" />
+                        </p:column>
                         <p:column sortBy="#{usr.firstName}" filterBy="#{usr.firstName}">
                             <f:facet name="header">
                                 <h:outputText value="Statut" />
@@ -167,11 +211,17 @@
                         </p:column>
 
                         <p:column style="">
-                            <p:commandButton ajax="true" value="reset password" actionListener="#{userBean.detailUser}" update=":myform" oncomplete="PF('passwordReini').show();" icon="ui-icon fa fa-edit" style="color:white">
-
-                                <f:param name="userId" value="#{usr.userName}" />
-                            </p:commandButton>
+                            
+                            <p:commandButton value="reset password" actionListener="#{userBean.changePassword}" >
+                            <p:confirm header="Confirmation" message="Are you sure?" icon="ui-icon-alert" />
+                        </p:commandButton>
+                            <p:confirmDialog global="true" showEffect="fade" hideEffect="fade">
+        <p:commandButton value="Yes" type="button" styleClass="ui-confirmdialog-yes" icon="ui-icon-check" />
+        <p:commandButton value="No" type="button" styleClass="ui-confirmdialog-no" icon="ui-icon-close" />
+    </p:confirmDialog>
                         </p:column>
+
+                        
 
                     </p:dataTable>
                 </h:form>

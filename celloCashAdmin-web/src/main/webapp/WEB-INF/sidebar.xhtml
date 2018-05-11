@@ -11,19 +11,17 @@
                 <h:form id="menuform">
                     <ph:menu widgetVar="me">
                         <p:menuitem id="om_dashboard" value="Dashboard" icon="fa fa-fw fa-dashboard" outcome="/dashboard" />
-                        <p:submenu   label="Administration et paramétrage" icon="fa fa-fw fa-pie-chart">
+                        <p:submenu   label="Administration" icon="fa fa-fw fa fa-desktop">
 
 
-                            <p:menuitem value="Business" outcome="/commissionBusiness" icon="fa fa-fw fa-pie-chart"/>
-                            <p:submenu   label="Client" icon="fa fa-fw fa-pie-chart">
+                        
 
                                 <p:menuitem  value="Banques" icon="fa fa-fw fa-university " outcome="/banque" />
                                 <p:menuitem  value="Agences bancaires" icon="fa fa-fw fa-location-arrow " outcome="/agenceBancaire" />
                                 <p:menuitem  value="Commission client" icon="fa fa-fw fa-pie-chart " outcome="/commissionClient" />
                                 <p:menuitem value="Commission business" outcome="/commissionBusiness" icon="fa fa-fw fa-pie-chart"/>
                                 <p:menuitem  value="Taxes" icon="fa fa-fw fa-pie-chart " outcome="/commissionTaxe" />
-                            </p:submenu>
-
+                           
 
 
                         </p:submenu>
@@ -46,7 +44,7 @@
 
 
 
-                        <p:submenu   label="Support" icon="fa fa-fw fa-pie-chart">
+                        <p:submenu   label="Support" icon="fa fa-fw fa fa-comments-o">
 
 
 
@@ -55,7 +53,7 @@
 
 
                         </p:submenu>
-                        <p:submenu   label="Reporting" icon="fa fa-fw fa-pie-chart">
+                        <p:submenu   label="Reporting" icon="fa fa-fw fa fa-line-chart">
 
 
                         </p:submenu>
@@ -82,12 +80,12 @@
                         <p:menuitem  value="Grossiste" icon="fa fa-fw fa-university " outcome="/grossiste" />
                         <p:submenu   label="Systemes" icon="fa fa-sun-o">
                             <p:submenu label="Paramètres" icon="fa fa-fw fa-wrench">
-                                <p:menuitem value="Roles" outcome="listRoles" icon="fa fa-fw fa-vcard"/>
+                               
                             </p:submenu>
-                            <p:submenu label="User profile" icon="fa fa-fw fa-users">
-
+                            <p:submenu label="Gestion utilisateurs" icon="fa fa-fw fa-users">
+                                <p:menuitem value="Utilisateurs" outcome="listUsers" icon="fa fa-fw fa-vcard"/>
                                 <p:menuitem value="Roles" outcome="listRoles" icon="fa fa-fw fa-vcard"/>
-                                <p:menuitem value="Users" outcome="listUsers" icon="fa fa-fw fa-vcard"/>
+                                <p:menuitem value="Historique" outcome="historiqueConnexion" icon="fa fa-fw fa-vcard"/>
 
 
 

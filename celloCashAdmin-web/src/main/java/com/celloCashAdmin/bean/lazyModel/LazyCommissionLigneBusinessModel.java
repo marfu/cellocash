@@ -8,6 +8,7 @@ package com.celloCashAdmin.bean.lazyModel;
 import com.celloCashAdmin.bean.util.FactoryBean;
 import com.cellocash.model.Agence_Bancaire;
 import com.cellocash.model.Commission_Ligne_Business;
+import com.cellocash.model.dto.CommissionBusinessDTO;
 import com.cellocash.model.services.IAgenceBancaireService;
 import com.cellocash.model.services.ICommissionLigneBusinessService;
 import java.util.ArrayList;
@@ -24,12 +25,12 @@ import org.primefaces.model.SortOrder;
  */
 
 
-public class LazyCommissionLigneBusinessModel extends LazyDataModel<Commission_Ligne_Business>{
+public class LazyCommissionLigneBusinessModel extends LazyDataModel<CommissionBusinessDTO>{
     
      @EJB
     private ICommissionLigneBusinessService commissionLigneBusinessService;
 
-    private List<Commission_Ligne_Business> datasource;
+    private List<CommissionBusinessDTO> datasource;
     private long id;
 
     public LazyCommissionLigneBusinessModel(long id) {
@@ -40,8 +41,8 @@ public class LazyCommissionLigneBusinessModel extends LazyDataModel<Commission_L
     }
 
     @Override
-    public Commission_Ligne_Business getRowData(String rowKey) {
-        for (Commission_Ligne_Business item : datasource) {
+    public CommissionBusinessDTO getRowData(String rowKey) {
+        for (CommissionBusinessDTO item : datasource) {
             if (item.getId().equals(rowKey)) {
                 return item;
             }
@@ -51,23 +52,33 @@ public class LazyCommissionLigneBusinessModel extends LazyDataModel<Commission_L
     }
 
     @Override
-    public Object getRowKey(Commission_Ligne_Business item) {
+    public Object getRowKey(CommissionBusinessDTO item) {
         return item.getId();
     }
 
     @Override
-    public List<Commission_Ligne_Business> load(int first, int pageSize, String sortField, SortOrder sortOrder, Map<String, Object> filters) {
+    public List<CommissionBusinessDTO> load(int first, int pageSize, String sortField, SortOrder sortOrder, Map<String, Object> filters) {
 
-        System.out.println("xxxxxxxxxxxxxxxxxxx");
-        List<Commission_Ligne_Business> data = new ArrayList<>();
+       
+        List<CommissionBusinessDTO> data = new ArrayList<>();
 
         String request = "";
         String q = "";
-       // request = "SELECT ab FROM Agence_Bancaire ab  LEFT JOIN ab.banqueCellocash as b Where b.id= '" + id + "'";
-       //// q = "SELECT COUNT(b)  FROM Agence_Bancaire ab LEFT JOIN ab.banqueCellocash as b Where b.id= '" + id + "'";
+       
         
-         request = "SELECT ab FROM Commission_Ligne_Business ab   where 1=1";
-        q = "SELECT COUNT(ab)  FROM Commission_Ligne_Business ab   where 1=1";
+         request = "SELECT ab.id as id,p.designation as pays ,"
+                 + "a.designation as agenceBancaire,"
+                 + "b.nom as banque ,"
+                 + "ab.operationCellocah.libelle as operationBusiness ,"
+                 + "ab.programmeFacturationBusinesse.designation as programmeBusiness ,"
+                 + "ab.dateEffet as dateEffet "
+                 + "FROM Commission_Ligne_Business ab  "
+                 + ",Banque_Cellocash b "
+                 + ",Agence_Bancaire a "
+                 + ",Pays p "
+                 + "where (ab.banque_Cellocash_fk=b.id OR ab.banque_Cellocash_fk IS NULL) and (ab.pays_fk=p.id OR ab.pays_fk IS NULL) and (ab.agenceBancaire_fk=a.id OR ab.agenceBancaire_fk IS NULL)";
+         
+         q = "SELECT COUNT(ab)  FROM Commission_Ligne_Business ab   where 1=1";
 
         //FILTERS 
         for (Iterator<String> it = filters.keySet().iterator(); it.hasNext();) {
@@ -75,11 +86,10 @@ public class LazyCommissionLigneBusinessModel extends LazyDataModel<Commission_L
             String filterProperty = it.next();
             String filterValue = (String) filters.get(filterProperty);
 
-            request = request + " AND ab." + filterProperty + " LIKE '" + filterValue + "%'";
-            q = q + " AND ab." + filterProperty + " LIKE '" + filterValue + "%'";
+            request = request + " AND " + filterProperty + " LIKE '" + filterValue + "%'";
+            q = q + " AND " + filterProperty + " LIKE '" + filterValue + "%'";
         }
-
-//        // SORT 
+ 
 //        
         if (sortField != null) {
             request = request + " ORDER BY ab." + sortField;
@@ -99,6 +109,19 @@ public class LazyCommissionLigneBusinessModel extends LazyDataModel<Commission_L
         System.out.println("xxxxxxxxxEnd lAzy model xxxxxxxxxx");
         return data;
 
+        
+        
+       
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
     }
     
 }

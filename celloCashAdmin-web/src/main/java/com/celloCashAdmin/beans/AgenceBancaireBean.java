@@ -54,7 +54,7 @@ public class AgenceBancaireBean implements Serializable {
     private String id;
     private Long idPays;
 
-    
+    private List<Agence_Bancaire> listeAgenceBancaire;
 
     
     
@@ -111,6 +111,19 @@ public class AgenceBancaireBean implements Serializable {
         this.id = id;
     }
 
+    public List<Agence_Bancaire> getListeAgenceBancaire() {
+        
+        return listeAgenceBancaire=agenceBancaireService.findAll();
+    }
+
+    public void setListeAgenceBancaire(List<Agence_Bancaire> listeAgenceBancaire) {
+        this.listeAgenceBancaire = listeAgenceBancaire;
+    }
+
+    
+    
+    
+    
     @PostConstruct
     public void init() {
         System.out.println("Liste agence bancaire par banque cello cash ");
@@ -174,5 +187,14 @@ public class AgenceBancaireBean implements Serializable {
 
         selectedAgenceBancaire = agenceBancaireService.getDetail(Long.parseLong(id));
 
+    }
+    
+      public void selectBanque() {
+        Banque_Cellocash banque = banqueCelloCashService.getDetail(selectedAgenceBancaire.getBanqueCellocash().getId());
+        //codeRegion = null;
+
+        selectedAgenceBancaire.setPrefixeCpteOrdinaire(banque.getPrefixeCpteOrdinaire());
+        selectedAgenceBancaire.setPrefixeCpteneEparg(banque.getPrefixeCpteneEparg());
+        
     }
 }

@@ -14,6 +14,8 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
+import org.hibernate.annotations.Index;
+
 
 /**
  *
@@ -34,16 +36,29 @@ public class Agence_Bancaire implements Serializable {
     @Column(name = "DESIGNATION_AGENCE")
     private String designation;
 
-    @ManyToOne
+    @ManyToOne(optional = true)
     @JoinColumn(name = "IDENTIFIANT_BANQUE_FK", referencedColumnName = "IDENTIFIANT_BANQUE")
     private Banque_Cellocash banqueCellocash;
-
-
 
     @ManyToOne
     @JoinColumn(name = "TYPE_AGENCE_BANCAIRE_FK", referencedColumnName = "TYPE_AGENCE_BANCAIRE")
     private Type_Agence_Bancaire TypeAgenceBancaire;
 
+     @Column(name = "PREFIXE_COMPTE_ORDINAIRE")
+    private int prefixeCpteOrdinaire;
+
+    @Column(name = "PREFIXE_COMPTE_EPARGNE")
+    private int prefixeCpteneEparg;
+    
+    @Column(name = "STATUT")
+    private boolean statut;
+   
+    
+    
+    @Index(name = "pays_fk")
+    private long pays_fk;
+    
+    
     public Long getId() {
         return id;
     }
@@ -63,8 +78,6 @@ public class Agence_Bancaire implements Serializable {
     public void setDesignation(String designation) {
         this.designation = designation;
     }
-
-   
 
     public Type_Agence_Bancaire getTypeAgenceBancaire() {
         return TypeAgenceBancaire;
@@ -94,9 +107,6 @@ public class Agence_Bancaire implements Serializable {
         return true;
     }
 
-    
-   
-
     public Banque_Cellocash getBanqueCellocash() {
         return banqueCellocash;
     }
@@ -105,4 +115,39 @@ public class Agence_Bancaire implements Serializable {
         this.banqueCellocash = banqueCellocash;
     }
 
+    public int getPrefixeCpteOrdinaire() {
+        return prefixeCpteOrdinaire;
+    }
+
+    public void setPrefixeCpteOrdinaire(int prefixeCpteOrdinaire) {
+        this.prefixeCpteOrdinaire = prefixeCpteOrdinaire;
+    }
+
+    public int getPrefixeCpteneEparg() {
+        return prefixeCpteneEparg;
+    }
+
+    public void setPrefixeCpteneEparg(int prefixeCpteneEparg) {
+        this.prefixeCpteneEparg = prefixeCpteneEparg;
+    }
+
+    public long getPays_fk() {
+        return pays_fk;
+    }
+
+    public void setPays_fk(long pays_fk) {
+        this.pays_fk = pays_fk;
+    }
+
+    public boolean isStatut() {
+        return statut;
+    }
+
+    public void setStatut(boolean statut) {
+        this.statut = statut;
+    }
+
+    
+    
+   
 }

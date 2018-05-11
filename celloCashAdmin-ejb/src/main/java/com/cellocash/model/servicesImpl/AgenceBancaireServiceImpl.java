@@ -53,5 +53,10 @@ public class AgenceBancaireServiceImpl implements IAgenceBancaireService, Serial
     public List<Agence_Bancaire> findAllByBanque(long idBanqe) {
         return agenceBancaireDao.findAllByBanque(idBanqe);
     }
+
+    @Override
+    public List<Agence_Bancaire> findAll() {
+        return agenceBancaireDao.findAll();
     
+}
 }

@@ -7,6 +7,7 @@ package com.cellocash.model.servicesImpl;
 
 import com.cellocash.model.Commission_Ligne_Business;
 import com.cellocash.model.dao.CommissionLigneBusinessDao;
+import com.cellocash.model.dto.CommissionBusinessDTO;
 import com.cellocash.model.services.ICommissionLigneBusinessService;
 import java.io.Serializable;
 import java.util.List;
@@ -41,7 +42,7 @@ public class CommissionLigneBusinessServiceImpl implements ICommissionLigneBusin
     }
 
     @Override
-    public List<Commission_Ligne_Business> executeLazyQuery(String query, int first, int pageSize) {
+    public List<CommissionBusinessDTO> executeLazyQuery(String query, int first, int pageSize) {
          return commissionLigneBusinessDao.executeLazyQuery(query, first, pageSize);
         //throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
